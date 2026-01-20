@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -17,12 +17,20 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
   styleUrls: ['./admin-layout.component.css']
 })
 export class AdminLayoutComponent implements AfterViewInit {
+  @ViewChild('sidebar') sidebar!: SidebarComponent;
+
   constructor() {}
 
   ngAfterViewInit(): void {
     // Initialize Feather Icons
     if ((globalThis as any).feather) {
       (globalThis as any).feather.replace();
+    }
+  }
+
+  onSidebarToggle(): void {
+    if (this.sidebar) {
+      this.sidebar.toggleSidebar();
     }
   }
 }

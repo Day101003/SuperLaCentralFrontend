@@ -1,1 +1,181 @@
 /* Dashboard custom styles */
+
+/* Animación de entrada para las barras de progreso */
+@keyframes progressAnimation {
+  from {
+    width: 0%;
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.progress-bar {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-bar.animate-progress {
+  animation: progressAnimation 1s ease-out;
+}
+
+/* Hover suave para cards */
+.hover\:shadow-xl {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto de profundidad en el card principal */
+.bg-gradient-to-br {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-gradient-to-br::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: shimmer 8s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animación sutil para iconos */
+[data-feather] {
+  transition: transform 0.2s ease;
+}
+
+button:hover [data-feather],
+.hover\:shadow-xl:hover [data-feather] {
+  transform: scale(1.1);
+}
+
+/* Timeline vertical mejorada */
+.before\:absolute::before {
+  animation: lineGrow 1.5s ease-out;
+}
+
+@keyframes lineGrow {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+/* Transiciones suaves para todos los elementos interactivos */
+button,
+select,
+.transition-all,
+.transition-colors,
+.transition-shadow {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto pulse sutil en badges */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.bg-emerald-50,
+.bg-blue-50,
+.bg-yellow-50,
+.bg-rose-50 {
+  animation: pulse-subtle 3s infinite;
+}
+
+/* Mejora visual de las cards de transacciones */
+.divide-y > div:hover {
+  transform: translateX(4px);
+  transition: transform 0.2s ease;
+}
+
+/* Sombra personalizada para el header */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Estilo para el dropdown de filtros */
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+}
+
+/* Animación de entrada escalonada para las cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grid > * {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.grid > *:nth-child(1) { animation-delay: 0.1s; }
+.grid > *:nth-child(2) { animation-delay: 0.2s; }
+.grid > *:nth-child(3) { animation-delay: 0.3s; }
+.grid > *:nth-child(4) { animation-delay: 0.4s; }
+.grid > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* Scrollbar personalizado para áreas scrolleables */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Efecto glassmorphism sutil en hover */
+.bg-white:hover {
+  backdrop-filter: blur(10px);
+}
+
+/* Estilos responsivos mejorados */
+@media (max-width: 768px) {
+  .grid {
+    gap: 1rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+}

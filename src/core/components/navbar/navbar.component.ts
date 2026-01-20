@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -10,11 +10,12 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements AfterViewInit {
+  @Output() sidebarToggle = new EventEmitter<void>();
+
   constructor() {}
 
   toggleSidebar(): void {
-    const body = document.body;
-    body.classList.toggle('sidenav-toggled');
+    this.sidebarToggle.emit();
   }
 
   ngAfterViewInit(): void {

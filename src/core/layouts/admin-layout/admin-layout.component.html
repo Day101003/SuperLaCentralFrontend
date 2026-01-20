@@ -1,10 +1,10 @@
-<app-navbar></app-navbar>
+<app-navbar (sidebarToggle)="onSidebarToggle()"></app-navbar>
 
 <div class="flex min-h-screen pt-16">
-  <app-sidebar></app-sidebar>
+  <app-sidebar #sidebar></app-sidebar>
   
-  <div class="flex-1 ml-64">
-    <main class="p-6">
+  <div class="flex-1 lg:ml-64 transition-all duration-300">
+    <main class="p-4 md:p-6">
       <router-outlet></router-outlet>
     </main>
   </div>

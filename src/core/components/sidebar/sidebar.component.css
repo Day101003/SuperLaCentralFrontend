@@ -1,1 +1,47 @@
 /* Sidebar Tailwind custom styles */
+
+/* Animación suave para el sidebar en móvil */
+@media (max-width: 1023px) {
+  nav {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Asegurar que el sidebar no cause scroll horizontal */
+nav {
+  will-change: transform;
+}
+
+/* Animación de rotación para el chevron */
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Transición suave para el dropdown */
+.max-h-0 {
+  max-height: 0;
+}
+
+.max-h-96 {
+  max-height: 24rem;
+}
+
+/* Prevenir scroll del body cuando el sidebar está abierto en móvil */
+body.sidebar-open {
+  overflow: hidden;
+}
+
+/* Mejorar performance de animaciones */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Z-index hierarchy */
+.z-40 {
+  z-index: 40;
+}
+
+.z-50 {
+  z-index: 50;
+}
