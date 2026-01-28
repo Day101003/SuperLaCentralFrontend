@@ -2,14 +2,29 @@ import { Routes } from '@angular/router';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { authGuard } from './guards/auth.guard';
 
 export const CORE_ROUTES: Routes = [
+  
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('../modules/auth/login.routes')
+        .then(m => m.AUTH_ROUTES)
+  },
+ 
   {
     path: '',
     component: AdminLayoutComponent,
+    canActivate: [authGuard], 
     children: [
       {
         path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
         component: DashboardComponent,
       },
       {

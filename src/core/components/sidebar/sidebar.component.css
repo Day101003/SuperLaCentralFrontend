@@ -1,15 +1,58 @@
-/* Sidebar Tailwind custom styles */
+/* Sidebar styles - sin usar Tailwind para mejor rendimiento */
 
-/* Animación suave para el sidebar en móvil */
-@media (max-width: 1023px) {
-  nav {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Base sidebar styles */
+.sidebar-nav {
+  position: fixed;
+  left: 0;
+  top: 64px;
+  width: 16rem; /* 64 * 0.25rem = 16rem (w-64 en Tailwind) */
+  height: calc(100vh - 64px);
+  background-color: white;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding-top: 4rem;
+  border-right: 1px solid rgba(0, 97, 242, 0.2);
+  z-index: 50;
+  transform: translateX(-100%);
+  transition: transform 0.2s ease-out;
+}
+
+/* Sidebar open state */
+.sidebar-nav.sidebar-open {
+  transform: translateX(0);
+}
+
+/* Desktop: always show sidebar */
+@media (min-width: 1024px) {
+  .sidebar-nav {
+    transform: translateX(0) !important;
   }
 }
 
-/* Asegurar que el sidebar no cause scroll horizontal */
-nav {
-  will-change: transform;
+/* Mejorar scroll del sidebar */
+.sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 97, 242, 0.3) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 97, 242, 0.3);
+  border-radius: 3px;
+}
+
+/* Animación suave para el sidebar en móvil */
+@media (max-width: 1023px) {
+  .sidebar-nav {
+    will-change: transform;
+  }
 }
 
 /* Animación de rotación para el chevron */

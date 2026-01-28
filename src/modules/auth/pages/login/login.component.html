@@ -1,0 +1,142 @@
+<div class="min-h-screen flex">
+  <!-- Left Side - Branding -->
+  <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-blue-700 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-secondary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full translate-x-1/2 translate-y-1/2"></div>
+    </div>
+    
+    <div class="relative z-10 flex flex-col justify-center items-center w-full px-12 text-white">
+      <img src="logo3.png" alt="La Central Supermercado" class="w-80 h-auto mb-8">
+      <h1 class="text-4xl font-bold mb-4 text-center">Sistema de Gestión</h1>
+      <p class="text-xl text-blue-100 text-center max-w-md">
+        Plataforma integral para la administración de tu supermercado
+      </p>
+    </div>
+  </div>
+
+  <!-- Right Side - Login Form -->
+  <div class="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      <!-- Mobile Logo -->
+      <div class="lg:hidden text-center mb-8">
+        <img src="logo2.svg" alt="La Central Supermercado" class="w-48 h-auto mx-auto mb-4">
+      </div>
+
+      <!-- Header -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900">
+          Iniciar Sesión
+        </h2>
+        <p class="mt-2 text-sm text-gray-600">
+          Ingresa tus credenciales para acceder al sistema
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+        @if (authStore.error()) {
+          <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+            <div class="flex items-center">
+              <i data-feather="alert-circle" class="w-5 h-5 text-red-500 mr-3"></i>
+              <p class="text-sm text-red-700">{{ authStore.error() }}</p>
+            </div>
+          </div>
+        }
+
+        <div class="space-y-5">
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+              Correo Electrónico
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-feather="mail" class="w-5 h-5 text-gray-400"></i>
+              </div>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all sm:text-sm"
+                placeholder="correo@ejemplo.com"
+              />
+            </div>
+            @if (email?.invalid && (email?.dirty || email?.touched)) {
+              <p class="text-red-600 text-xs mt-1 flex items-center">
+                <i data-feather="alert-circle" class="w-3 h-3 mr-1"></i>
+                @if (email?.errors?.['required']) {
+                  <span>El correo es requerido</span>
+                }
+                @if (email?.errors?.['email']) {
+                  <span>Ingrese un correo válido</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <label for="password_user" class="block text-sm font-semibold text-gray-700 mb-2">
+              Contraseña
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-feather="lock" class="w-5 h-5 text-gray-400"></i>
+              </div>
+              <input
+                id="password_user"
+                type="password"
+                formControlName="password_user"
+                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all sm:text-sm"
+                placeholder="••••••••"
+              />
+            </div>
+            @if (password_user?.invalid && (password_user?.dirty || password_user?.touched)) {
+              <p class="text-red-600 text-xs mt-1 flex items-center">
+                <i data-feather="alert-circle" class="w-3 h-3 mr-1"></i>
+                @if (password_user?.errors?.['required']) {
+                  <span>La contraseña es requerida</span>
+                }
+                @if (password_user?.errors?.['minlength']) {
+                  <span>Mínimo 6 caracteres</span>
+                }
+              </p>
+            }
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-2">
+          <button
+            type="submit"
+            [disabled]="authStore.loading() || loginForm.invalid"
+            class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            @if (authStore.loading()) {
+              <div class="flex items-center">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Iniciando sesión...</span>
+              </div>
+            } @else {
+              <div class="flex items-center">
+                <i data-feather="log-in" class="w-5 h-5 mr-2"></i>
+                <span>Iniciar Sesión</span>
+              </div>
+            }
+          </button>
+        </div>
+      </form>
+
+      <!-- Footer -->
+      <div class="text-center mt-6">
+        <p class="text-xs text-gray-500">
+          © 2026 La Central Supermercado. Todos los derechos reservados.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

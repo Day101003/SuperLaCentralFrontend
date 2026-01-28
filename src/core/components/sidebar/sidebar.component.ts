@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements AfterViewInit {
-  isOpen = false;
+  isOpen = true; // Iniciar abierto, el CSS se encarga del responsive
   isMobile = false;
   isGestionAdminOpen = false;
 
@@ -19,7 +19,6 @@ export class SidebarComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Initialize Feather Icons with a small delay
     setTimeout(() => {
       if ((globalThis as any).feather) {
         (globalThis as any).feather.replace();

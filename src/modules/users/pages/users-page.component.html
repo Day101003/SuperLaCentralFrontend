@@ -1,76 +1,101 @@
-<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
-  <div class="container-xl px-4">
-    <div class="page-header-content pt-4">
-      <div class="row align-items-center justify-content-between">
-        <div class="col-auto mt-4">
-          <h1 class="page-header-title">
-            <div class="page-header-icon"><i data-feather="users"></i></div>
-            Usuarios
-          </h1>
-          <div class="page-header-subtitle">Gestión de usuarios del sistema</div>
-        </div>
-      </div>
+<!-- Header Section -->
+<div class="mb-8">
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Usuarios</p>
+      <h1 class="text-4xl font-bold text-gray-900">Usuarios</h1>
     </div>
-  </div>
-</header>
-
-<div class="container-xl px-4 mt-n10">
-  <div class="card">
-    <div class="card-header">Lista de Usuarios</div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Usuario Demo</td>
-              <td>demo@contadoria.com</td>
-              <td><span class="badge bg-primary">Admin</span></td>
-              <td><span class="badge bg-success">Activo</span></td>
-              <td>
-                <button class="btn btn-sm btn-primary me-2">
-                  <i data-feather="edit-2"></i>
-                </button>
-                <button class="btn btn-sm btn-danger">
-                  <i data-feather="trash-2"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Usuario Test</td>
-              <td>test@contadoria.com</td>
-              <td><span class="badge bg-info">Usuario</span></td>
-              <td><span class="badge bg-success">Activo</span></td>
-              <td>
-                <button class="btn btn-sm btn-primary me-2">
-                  <i data-feather="edit-2"></i>
-                </button>
-                <button class="btn btn-sm btn-danger">
-                  <i data-feather="trash-2"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div class="mt-3">
-        <button class="btn btn-primary">
-          <i data-feather="plus" class="me-2"></i>
-          Agregar Usuario
-        </button>
-      </div>
-    </div>
+    <button 
+      [routerLink]="['crear']"
+      class="px-4 py-2 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors flex items-center gap-2">
+      <i data-feather="plus" class="w-5 h-5"></i>
+      Crear Nuevo Usuario
+    </button>
   </div>
 </div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <!-- Total Users -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-blue-50 p-3 rounded-lg">
+        <i data-feather="users" class="w-6 h-6 text-blue-600"></i>
+      </div>
+      <span class="text-2xl font-bold text-gray-900">{{ pagination.totalItems() }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Total Usuarios</p>
+    <p class="text-xs text-gray-500 mt-1">Registrados en el sistema</p>
+  </div>
+
+  <!-- Active Users -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-yellow-50 p-3 rounded-lg">
+        <i data-feather="user-check" class="w-6 h-6 text-yellow-600"></i>
+      </div>
+      <span class="text-2xl font-bold text-gray-900">6</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Usuarios Activos</p>
+    <p class="text-xs text-gray-500 mt-1">↑ 75% del total</p>
+  </div>
+
+  <!-- Inactive Users -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-blue-50 p-3 rounded-lg">
+        <i data-feather="user-x" class="w-6 h-6 text-blue-600"></i>
+      </div>
+      <span class="text-2xl font-bold text-gray-900">2</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Usuarios Inactivos</p>
+    <p class="text-xs text-gray-500 mt-1">↓ 25% del total</p>
+  </div>
+
+  <!-- New This Month -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-yellow-50 p-3 rounded-lg">
+        <i data-feather="user-plus" class="w-6 h-6 text-yellow-600"></i>
+      </div>
+      <span class="text-2xl font-bold text-gray-900">3</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Nuevos Este Mes</p>
+    <p class="text-xs text-gray-500 mt-1">+37% vs mes anterior</p>
+  </div>
+</div>
+
+<!-- Data Table -->
+<app-data-table
+  [columns]="tableColumns"
+  [data]="pagination.paginatedItems()"
+  [actions]="tableActions"
+  [showSearch]="true"
+  [showFooter]="true"
+  [customActions]="true"
+  [startRecord]="pagination.startRecord()"
+  [endRecord]="pagination.endRecord()"
+  [totalRecords]="pagination.totalItems()"
+  (search)="onSearch($event)"
+  emptyMessage="No se encontraron usuarios">
+  
+  <!-- Custom Actions Slot -->
+  <div slot="actions" class="flex gap-2">
+    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2">
+      <i data-feather="download" class="w-4 h-4"></i>
+      <span class="hidden sm:inline">Exportar</span>
+    </button>
+    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2">
+      <i data-feather="filter" class="w-4 h-4"></i>
+      <span class="hidden sm:inline">Filtrar</span>
+    </button>
+  </div>
+
+  <!-- Pagination Slot -->
+  <app-pagination
+    slot="pagination"
+    [currentPage]="pagination.currentPage()"
+    [totalPages]="pagination.totalPages()"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</app-data-table>

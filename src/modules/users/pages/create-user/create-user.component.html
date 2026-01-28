@@ -1,0 +1,329 @@
+<!-- Header Section -->
+<div class="mb-8">
+  <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
+    <a [routerLink]="['/dashboard']" class="hover:text-primary transition-colors">Dashboard</a>
+    <i data-feather="chevron-right" class="w-4 h-4"></i>
+    <a [routerLink]="['/users']" class="hover:text-primary transition-colors">Usuarios</a>
+    <i data-feather="chevron-right" class="w-4 h-4"></i>
+    <span class="text-gray-900 font-medium">Crear Usuario</span>
+  </div>
+  
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Usuarios</p>
+      <h1 class="text-4xl font-bold text-gray-900">Crear Nuevo Usuario</h1>
+    </div>
+    <button 
+      (click)="onCancel()"
+      class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2">
+      <i data-feather="x" class="w-4 h-4"></i>
+      Cancelar
+    </button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="max-w-5xl">
+  <!-- Alerts -->
+  @if (errorMessage) {
+    <div class="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-4 flex items-start gap-3">
+      <i data-feather="alert-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
+      <div class="flex-1">
+        <p class="text-red-800 font-medium">{{ errorMessage }}</p>
+      </div>
+      <button (click)="errorMessage = ''" class="text-red-500 hover:text-red-700">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-500 rounded-lg p-4 flex items-start gap-3">
+      <i data-feather="check-circle" class="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+      <div class="flex-1">
+        <p class="text-emerald-800 font-medium">{{ successMessage }}</p>
+      </div>
+    </div>
+  }
+
+  <!-- Form Card -->
+  <div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="p-8">
+      
+      <!-- Section: Información Personal -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+          <div class="bg-primary bg-opacity-10 p-2 rounded-lg">
+            <i data-feather="user" class="w-5 h-5 text-primary"></i>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900">Información Personal</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Nombre -->
+          <div>
+            <label for="name_user" class="block text-sm font-semibold text-gray-700 mb-2">
+              Nombre <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="name_user"
+              formControlName="name_user"
+              placeholder="Ingrese el nombre"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' + 
+                      (name_user?.invalid && (name_user?.dirty || name_user?.touched) 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                        : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+            @if (name_user?.invalid && (name_user?.dirty || name_user?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                @if (name_user?.errors?.['required']) {
+                  <span>El nombre es requerido</span>
+                }
+                @if (name_user?.errors?.['minlength']) {
+                  <span>El nombre debe tener al menos 2 caracteres</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Apellido -->
+          <div>
+            <label for="lastname" class="block text-sm font-semibold text-gray-700 mb-2">
+              Apellido <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="lastname"
+              formControlName="lastname"
+              placeholder="Ingrese el apellido"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' + 
+                      (lastname?.invalid && (lastname?.dirty || lastname?.touched) 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                        : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+            @if (lastname?.invalid && (lastname?.dirty || lastname?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                @if (lastname?.errors?.['required']) {
+                  <span>El apellido es requerido</span>
+                }
+                @if (lastname?.errors?.['minlength']) {
+                  <span>El apellido debe tener al menos 2 caracteres</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Cédula -->
+          <div>
+            <label for="identity_card" class="block text-sm font-semibold text-gray-700 mb-2">
+              Cédula <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="identity_card"
+              formControlName="identity_card"
+              placeholder="123456789"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' + 
+                      (identity_card?.invalid && (identity_card?.dirty || identity_card?.touched) 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                        : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+            @if (identity_card?.invalid && (identity_card?.dirty || identity_card?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                <span>La cédula es requerida</span>
+              </p>
+            }
+          </div>
+
+          <!-- Teléfono -->
+          <div>
+            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+              Teléfono <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              formControlName="phone"
+              placeholder="12345678"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' + 
+                      (phone?.invalid && (phone?.dirty || phone?.touched) 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                        : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+            @if (phone?.invalid && (phone?.dirty || phone?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                <span>El teléfono es requerido</span>
+              </p>
+            }
+          </div>
+
+          <!-- Dirección -->
+          <div class="md:col-span-2">
+            <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">
+              Dirección <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="address"
+              formControlName="address"
+              placeholder="Ingrese la dirección completa"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' + 
+                      (address?.invalid && (address?.dirty || address?.touched) 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                        : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+            @if (address?.invalid && (address?.dirty || address?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                <span>La dirección es requerida</span>
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Información de Cuenta -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+          <div class="bg-violet-50 p-2 rounded-lg">
+            <i data-feather="lock" class="w-5 h-5 text-gray-600"></i>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900">Información de Cuenta</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+              Correo Electrónico <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="correo@ejemplo.com"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' + 
+                      (email?.invalid && (email?.dirty || email?.touched) 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                        : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+            @if (email?.invalid && (email?.dirty || email?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                @if (email?.errors?.['required']) {
+                  <span>El correo es requerido</span>
+                }
+                @if (email?.errors?.['email']) {
+                  <span>Ingrese un correo válido</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Contraseña -->
+          <div>
+            <label for="password_user" class="block text-sm font-semibold text-gray-700 mb-2">
+              Contraseña <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              id="password_user"
+              formControlName="password_user"
+              placeholder="Mínimo 6 caracteres"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' + 
+                      (password_user?.invalid && (password_user?.dirty || password_user?.touched) 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                        : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+            @if (password_user?.invalid && (password_user?.dirty || password_user?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                @if (password_user?.errors?.['required']) {
+                  <span>La contraseña es requerida</span>
+                }
+                @if (password_user?.errors?.['minlength']) {
+                  <span>La contraseña debe tener al menos 6 caracteres</span>
+                }
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Imagen de Perfil -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+          <div class="bg-emerald-50 p-2 rounded-lg">
+            <i data-feather="image" class="w-5 h-5 text-gray-600"></i>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900">Imagen de Perfil</h2>
+          <span class="text-sm text-gray-500">(Opcional)</span>
+        </div>
+        
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+          <div class="flex-1">
+            <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">
+              Seleccionar Imagen
+            </label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              (change)="onImageSelected($event)"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-700 file:cursor-pointer"
+            />
+            <p class="mt-2 text-sm text-gray-500">Tamaño máximo: 5MB. Formatos: JPG, PNG</p>
+          </div>
+          
+          @if (imagePreview) {
+            <div class="flex-shrink-0">
+              <p class="text-sm font-semibold text-gray-700 mb-2">Vista Previa</p>
+              <div class="relative">
+                <img 
+                  [src]="imagePreview" 
+                  alt="Vista previa" 
+                  class="w-32 h-32 object-cover rounded-xl border-2 border-gray-200 shadow-md"
+                />
+                <div class="absolute -top-2 -right-2 bg-gray-500 text-white rounded-full p-1">
+                  <i data-feather="check" class="w-4 h-4"></i>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+        <button
+          type="button"
+          (click)="onCancel()"
+          [disabled]="loading"
+          class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+          <i data-feather="x" class="w-5 h-5"></i>
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="loading || userForm.invalid"
+          class="px-6 py-3 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+          @if (loading) {
+            <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Creando...</span>
+          } @else {
+            <i data-feather="save" class="w-5 h-5"></i>
+            <span>Crear Usuario</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
