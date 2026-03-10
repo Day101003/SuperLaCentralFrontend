@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface TableColumn {
@@ -27,7 +27,10 @@ export interface TableAction {
           @if (showSearch) {
             <div class="flex-1 max-w-md">
               <div class="relative">
-                <i data-feather="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
                 <input
                   type="text"
                   placeholder="Buscar..."
@@ -56,7 +59,9 @@ export interface TableAction {
                     <span>{{ column.label }}</span>
                     @if (column.sortable) {
                       <button (click)="onSort(column.key)" class="text-gray-400 hover:text-gray-600">
-                        <i data-feather="arrow-up-down" class="w-4 h-4"></i>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path d="m7 15 5 5 5-5M7 9l5-5 5 5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                        </svg>
                       </button>
                     }
                   </div>
@@ -71,7 +76,7 @@ export interface TableAction {
           </thead>
           <tbody class="divide-y divide-gray-200">
             @if (data && data.length > 0) {
-              @for (row of data; track row[trackBy]) {
+              @for (row of data; track trackByField($index, row)) {
                 <tr class="hover:bg-gray-50 transition-colors">
                   @for (column of columns; track column.key) {
                     <td class="px-6 py-4 text-sm text-gray-900">
@@ -83,15 +88,39 @@ export interface TableAction {
                     </td>
                   }
                   @if (actions && actions.length > 0) {
-                    <td class="px-6 py-4 text-right">
+                    <td class="px-6 py-4">
                       <div class="action-buttons">
                         @for (action of actions; track action.label) {
                           <button
-                            (click)="action.handler(row)"
+                            type="button"
+                            (click)="handleAction(action, row)"
                             [title]="action.label"
                             [attr.data-action-class]="action.class"
                             class="action-btn">
-                            <i [attr.data-feather]="action.icon"></i>
+                            @if (action.icon === 'edit-2' || action.icon === 'edit') {
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                              </svg>
+                            } @else if (action.icon === 'trash-2' || action.icon === 'trash') {
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                              </svg>
+                            } @else if (action.icon === 'eye') {
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                              </svg>
+                            } @else {
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="12" cy="5" r="1"></circle>
+                                <circle cx="12" cy="19" r="1"></circle>
+                              </svg>
+                            }
                           </button>
                         }
                       </div>
@@ -103,7 +132,10 @@ export interface TableAction {
               <tr>
                 <td [attr.colspan]="columns.length + (actions && actions.length > 0 ? 1 : 0)" class="px-6 py-12 text-center">
                   <div class="flex flex-col items-center gap-3 text-gray-400">
-                    <i data-feather="inbox" class="w-12 h-12"></i>
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                      <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                    </svg>
                     <p class="text-sm font-medium">{{ emptyMessage }}</p>
                   </div>
                 </td>
@@ -131,12 +163,35 @@ export interface TableAction {
       display: block;
     }
 
+    /* Table container */
+    .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Table styles */
+    table {
+      table-layout: auto;
+      min-width: 100%;
+    }
+
+    th, td {
+      white-space: nowrap;
+    }
+
+    /* Actions column should always align right */
+    th:last-child,
+    td:last-child {
+      text-align: right;
+    }
+
     /* Action buttons styles */
     .action-buttons {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: flex-end;
       gap: 0.5rem;
+      white-space: nowrap;
+      min-width: fit-content;
     }
 
     .action-btn {
@@ -150,6 +205,9 @@ export interface TableAction {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+      min-width: 32px;
+      min-height: 32px;
     }
 
     .action-btn:hover {
@@ -157,11 +215,12 @@ export interface TableAction {
       transform: translateY(-1px);
     }
 
-    .action-btn i,
     .action-btn svg {
       width: 16px;
       height: 16px;
       display: block;
+      flex-shrink: 0;
+      stroke-width: 2;
     }
 
     /* Specific action button colors based on data attribute */
@@ -202,7 +261,7 @@ export interface TableAction {
     }
   `]
 })
-export class DataTableComponent implements AfterViewInit, AfterViewChecked {
+export class DataTableComponent {
   @Input() columns: TableColumn[] = [];
   @Input() data: any[] = [];
   @Input() actions?: TableAction[];
@@ -218,25 +277,15 @@ export class DataTableComponent implements AfterViewInit, AfterViewChecked {
   @Output() search = new EventEmitter<string>();
   @Output() sort = new EventEmitter<string>();
 
-  private isInitialized = false;
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  ngAfterViewInit(): void {
-    this.isInitialized = true;
-    this.updateFeatherIcons();
+  // Función de tracking que usa el campo especificado o el índice como fallback
+  trackByField(index: number, item: any): any {
+    const value = item[this.trackBy];
+    // Si el valor es undefined, null, o string vacío, usar el índice
+    return (value !== undefined && value !== null && value !== '') ? value : index;
   }
 
-  ngAfterViewChecked(): void {
-    if (this.isInitialized) {
-      this.updateFeatherIcons();
-    }
-  }
-
-  private updateFeatherIcons(): void {
-    if ((globalThis as any).feather) {
-      (globalThis as any).feather.replace();
-    }
+  handleAction(action: TableAction, row: any): void {
+    action.handler(row);
   }
 
   onSearch(event: Event): void {

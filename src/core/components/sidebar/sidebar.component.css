@@ -32,7 +32,7 @@
 /* Mejorar scroll del sidebar */
 .sidebar-nav {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 97, 242, 0.3) transparent;
+  scrollbar-color: rgb(30, 27, 75) transparent;
 }
 
 .sidebar-nav::-webkit-scrollbar {
@@ -44,7 +44,7 @@
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 97, 242, 0.3);
+  background-color: rgb(30, 27, 75);
   border-radius: 3px;
 }
 

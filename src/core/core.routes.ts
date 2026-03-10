@@ -32,6 +32,12 @@ export const CORE_ROUTES: Routes = [
         loadChildren: () =>
           import('../modules/users/users.routes')
             .then(m => m.USERS_ROUTES)
+      },
+      {
+        path: 'roles',
+        loadChildren: () =>
+          import('../modules/roles/roles.routes')
+            .then(m => m.ROLES_ROUTES)
       }
     ]
   },

@@ -1,0 +1,77 @@
+/* User Form Component - Professional Styles */
+
+/* Input focus animations */
+input:focus {
+  outline: none;
+}
+
+/* Smooth transitions for all interactive elements */
+input,
+button,
+.border {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Stepper animations */
+.stepper-step {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade in animation for step content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-content {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Card hover effect */
+.bg-white {
+  transition: all 0.3s ease;
+}
+
+/* Icon animations */
+i[data-feather] {
+  transition: all 0.2s ease;
+}
+
+button:hover i[data-feather] {
+  transform: scale(1.1);
+}
+
+/* File input custom styling */
+input[type="file"]::file-selector-button {
+  transition: all 0.2s ease;
+}
+
+input[type="file"]:hover::file-selector-button {
+  transform: translateY(-1px);
+}
+
+/* Image preview animation */
+img {
+  transition: all 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.05);
+}

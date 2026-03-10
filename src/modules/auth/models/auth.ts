@@ -35,4 +35,5 @@ export interface RegisterRequest {
   password_user: string;
   image?: string;
   id_rol: number;
+  is_active: boolean;
 }
