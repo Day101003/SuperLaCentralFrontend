@@ -1,0 +1,68 @@
+<h2 class="text-xl font-bold mb-4">Categorías</h2>
+
+<!-- Crear categoria -->
+
+<div class="bg-white p-4 rounded shadow mb-6">
+
+  <h3 class="font-semibold mb-3">Nueva categoría</h3>
+
+  <input
+    type="text"
+    placeholder="Nombre"
+    [(ngModel)]="nuevaCategoria.nombre_categoria"
+    class="border p-2 mr-2 rounded"
+  />
+
+  <input
+    type="text"
+    placeholder="Descripción"
+    [(ngModel)]="nuevaCategoria.descripcion"
+    class="border p-2 mr-2 rounded"
+  />
+
+  <button
+    (click)="crearCategoria()"
+    class="bg-green-600 text-white px-4 py-2 rounded">
+    Crear
+  </button>
+
+</div>
+
+<!-- Tabla -->
+
+<table class="w-full border">
+
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="p-2">ID</th>
+      <th class="p-2">Nombre</th>
+      <th class="p-2">Descripción</th>
+      <th class="p-2">Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr *ngFor="let categoria of categorias">
+
+      <td class="p-2">{{categoria.id_categoria}}</td>
+
+      <td class="p-2">{{categoria.nombre_categoria}}</td>
+
+      <td class="p-2">{{categoria.descripcion}}</td>
+
+      <td class="p-2">
+
+        <button
+          (click)="eliminarCategoria(categoria.id_categoria!)"
+          class="bg-red-500 text-white px-3 py-1 rounded">
+          Eliminar
+        </button>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+
+</table>

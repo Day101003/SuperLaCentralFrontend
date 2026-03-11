@@ -13,10 +13,15 @@ export class SidebarComponent implements AfterViewInit {
   isOpen = false;
   isMobile = false;
   isGestionAdminOpen = false;
+  isInventarioOpen = false;
 
   constructor() {
     this.checkScreenSize();
   }
+
+  toggleInventario() {
+  this.isInventarioOpen = !this.isInventarioOpen;
+}
 
   ngAfterViewInit(): void {
     // Initialize Feather Icons with a small delay

@@ -12,20 +12,31 @@ export const CORE_ROUTES: Routes = [
         path: '',
         component: DashboardComponent,
       },
+
       {
         path: 'users',
         loadChildren: () =>
           import('../modules/users/users.routes')
             .then(m => m.USERS_ROUTES)
+      },
+
+      {
+        path: 'inventory',
+        loadChildren: () =>
+          import('../modules/inventory/inventory.routes')
+            .then(m => m.INVENTORY_ROUTES)
       }
+
     ]
   },
-  { 
-    path: '404', 
-    component: NotFoundComponent 
+
+  {
+    path: '404',
+    component: NotFoundComponent
   },
-  { 
-    path: '**', 
-    redirectTo: '404' 
+
+  {
+    path: '**',
+    redirectTo: '404'
   }
 ];
