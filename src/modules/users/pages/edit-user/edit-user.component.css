@@ -1,0 +1,27 @@
+/* Edit User Component - Professional Styles */
+
+/* Loading spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth transitions */
+button,
+.border {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Icon animations */
+i[data-feather] {
+  transition: all 0.2s ease;
+}
+
+button:hover i[data-feather] {
+  transform: scale(1.1);
+}

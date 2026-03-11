@@ -30,7 +30,7 @@
         <input 
           class="w-full py-2.5 pl-10 pr-4 bg-white rounded-lg outline-none text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-300 transition-all" 
           type="search" 
-          placeholder="Buscar clientes, servicios, trámites..." 
+          placeholder="Buscar inventario, compras..." 
           aria-label="Search" 
         />
       </div>
@@ -72,7 +72,7 @@
           </div>
           <div class="hidden xl:block text-left">
             <p class="text-xs text-secondary">Bienvenido</p>
-            <p class="text-sm font-semibold leading-tight">Admin</p>
+            <p class="text-sm font-semibold leading-tight">{{ currentUser?.name_user || 'Usuario' }}</p>
           </div>
           <i data-feather="chevron-down" class="w-4 h-4 hidden xl:block"></i>
         </button>
@@ -81,8 +81,8 @@
         <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl hidden group-hover:block z-50 border border-gray-100">
           <div class="px-4 py-3 border-b border-gray-100">
             <p class="text-xs text-gray-500">Sesión iniciada como</p>
-            <p class="text-sm font-semibold text-primary mt-0.5">Usuario Admin</p>
-            <p class="text-xs text-gray-400 mt-0.5">admin@lacentral.com</p>
+            <p class="text-sm font-semibold text-primary mt-0.5">{{ currentUser?.name_user || 'Usuario' }} {{ currentUser?.lastname || '' }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">{{ currentUser?.email || 'usuario@lacentral.com' }}</p>
           </div>
           
           <div class="py-2">
@@ -118,12 +118,14 @@
           </div>
           
           <div class="border-t border-gray-100 py-2">
-            <a class="flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors group/item" href="#!">
+            <button 
+              (click)="logout()"
+              class="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors group/item">
               <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-red-200 transition-colors">
                 <i data-feather="log-out" class="w-4 h-4 text-red-600"></i>
               </div>
               <p class="font-medium">Cerrar Sesión</p>
-            </a>
+            </button>
           </div>
         </div>
       </div>
