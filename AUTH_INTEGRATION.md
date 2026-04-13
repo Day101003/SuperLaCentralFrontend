@@ -3,7 +3,7 @@
 ## Configuración Realizada
 
 ### 1. Variables de Entorno
-- **environment.ts**: Configurado con `apiUrl: 'http://localhost:5000/api'`
+- **environment.ts**: Configurado con `apiUrl: 'http://localhost:5276/api'`
 - Ajusta el puerto según tu backend .NET
 
 ### 2. Servicio de Autenticación

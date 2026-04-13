@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7094/api'  // ✅ Cambiado a HTTPS
+  apiUrl: 'http://localhost:5276/api'
 };
