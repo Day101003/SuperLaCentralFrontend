@@ -1,0 +1,53 @@
+<div class="sidebar-backdrop" (click)="onClose()"></div>
+<div class="sidebar">
+  <button class="close-btn" (click)="onClose()" aria-label="Cerrar formulario">
+    <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+  
+  <h2 class="flex items-center gap-2 mb-6 text-2xl font-bold text-primary">
+    <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+    </svg>
+    {{ role ? 'Editar Rol' : 'Crear Nuevo Rol' }}
+  </h2>
+  <br>
+  <br>
+  <br>
+  <form class="flex flex-col gap-5" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name" class="block text-sm font-semibold text-primary-dark mb-1">Nombre del rol <span class="text-secondary">*</span></label>
+      <div class="relative">
+        <input id="name" name="name" type="text" required maxlength="50"
+          [(ngModel)]="formData.rol_name"
+          class="w-full px-4 py-2 border-2 border-primary/30 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary/30 bg-gray-50 text-primary-dark placeholder:text-gray-400 transition" 
+          placeholder="Ej: Administrador" />
+        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      </div>
+    </div>
+    <div>
+      <label for="description" class="block text-sm font-semibold text-primary-dark mb-1">Descripción</label>
+      <textarea id="description" name="description" rows="2" maxlength="120"
+        [(ngModel)]="formData.description_rol"
+        class="w-full px-4 py-2 border-2 border-primary/30 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary/30 bg-gray-50 text-primary-dark placeholder:text-gray-400 transition resize-none"
+        placeholder="Describe brevemente el rol"></textarea>
+    </div>
+    <div class="flex items-center gap-3 mt-1">
+      <input id="is_active" name="is_active" type="checkbox" [(ngModel)]="formData.is_active" class="accent-primary w-5 h-5 rounded border-primary/40 focus:ring-secondary" />
+      <label for="is_active" class="text-primary-dark font-medium select-none cursor-pointer">Activo</label>
+    </div>
+    <button type="submit" class="mt-2 bg-primary hover:bg-secondary text-white hover:text-primary-dark font-bold py-2 rounded-lg shadow transition-all flex items-center justify-center gap-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+      {{ role ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
+</div>

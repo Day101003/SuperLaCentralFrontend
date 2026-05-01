@@ -12,6 +12,27 @@ button,
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Stepper animations */
+.stepper-step {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade in animation for step content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-content {
+  animation: fadeIn 0.4s ease-out;
+}
+
 /* Loading spinner animation */
 @keyframes spin {
   to {

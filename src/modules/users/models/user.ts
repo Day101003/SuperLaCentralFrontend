@@ -10,6 +10,7 @@ export interface User {
   is_active: boolean;
   date_time: string;
   rol_name: string;
+  id_rol?: number;
 }
 
 export interface CreateUser {
@@ -22,6 +23,20 @@ export interface CreateUser {
   password_user: string;
   image?: string;
   id_rol: number;
+  is_active: boolean;
+}
+
+export interface UpdateUser {
+  name_user: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  address: string;
+  identity_card: string;
+  password_user?: string;
+  image?: string | null;
+  id_rol: number;
+  is_active: number; // Backend espera 0 o 1
 }
 
 export interface LoginCredentials {

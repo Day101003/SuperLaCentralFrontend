@@ -1,0 +1,101 @@
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30,27,75,0.18);
+  z-index: 999;
+  transition: opacity 0.3s;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  max-width: 100vw;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -4px 0 32px rgba(30,27,75,0.18);
+  z-index: 1000;
+  padding: 2.5rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  animation: slideInSidebar 0.3s cubic-bezier(.4,0,.2,1);
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+  border-left: 4px solid var(--primary);
+}
+
+@keyframes slideInSidebar {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.close-btn {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--primary);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-btn:hover {
+  color: var(--secondary);
+}
+
+.sidebar h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+label {
+  font-size: 1rem;
+  color: var(--primary-dark);
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+input[type="text"] {
+  padding: 0.7rem 1rem;
+  border: 1.5px solid var(--primary);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f9fafb;
+  transition: border 0.2s;
+}
+input:focus {
+  border-color: var(--secondary);
+  outline: none;
+}
+
+button[type="submit"] {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.8rem 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(30,27,75,0.08);
+}
+button[type="submit"]:hover {
+  background: var(--secondary);
+  color: var(--primary-dark);
+}
