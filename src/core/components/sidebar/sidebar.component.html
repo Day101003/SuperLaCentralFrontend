@@ -1,14 +1,10 @@
 <!-- Overlay para móvil -->
-<div 
-  *ngIf="isOpen && isMobile" 
-  class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity"
-  (click)="closeSidebar()"
-  style="top: 64px;">
+<div *ngIf="isOpen && isMobile" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity"
+  (click)="closeSidebar()" style="top: 64px;">
 </div>
 
 <!-- Sidebar -->
-<nav 
-  [class]="'sidebar-nav ' + (isOpen ? 'sidebar-open' : 'sidebar-closed')" 
+<nav [class]="'sidebar-nav ' + (isOpen ? 'sidebar-open' : 'sidebar-closed')"
   style="top: 64px; width: 16rem; max-width: 16rem; overflow-x: hidden;">
   <!-- Logo Section -->
   <div class="px-4 py-6 border-b border-primary border-opacity-20">
@@ -16,117 +12,104 @@
       <img src="logo2.svg" alt="La Central Supermercado" class="w-40 h-auto" style="max-width: 10rem; height: auto;">
     </div>
   </div>
-  
+
   <div class="py-6 px-3" style="padding-bottom: 6rem;">
-    
+
     <!-- Gestión admin -->
     <div class="mb-3">
-      <button 
-        (click)="toggleGestionAdmin()" 
+      <button (click)="toggleGestionAdmin()"
         class="w-full flex items-center justify-between px-4 py-3 text-primary text-base font-medium hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all">
         <div class="flex items-center">
           <i data-feather="settings" class="w-5 h-5 mr-3 text-secondary"></i>
           <span>Gestión admin</span>
         </div>
-        <i 
-          data-feather="chevron-down" 
+        <i data-feather="chevron-down"
           [class]="'w-5 h-5 text-secondary transition-transform ' + (isGestionAdminOpen ? 'rotate-180' : '')">
         </i>
       </button>
-      <div 
+      <div
         [class]="'mt-2 space-y-1 overflow-hidden transition-all duration-300 ' + (isGestionAdminOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0')">
-        <a 
-          (click)="closeSidebar()" 
-          routerLink="/users" 
-          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+        <a (click)="closeSidebar()" routerLink="/users"
+          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
           class="flex items-center pl-12 pr-4 py-3 text-gray-700 text-sm hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
           <i data-feather="user" class="w-4 h-4 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
           <span>Usuario</span>
         </a>
-        <a 
-          (click)="closeSidebar()" 
-          routerLink="/empleados" 
-          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+        <a (click)="closeSidebar()" routerLink="/empleados"
+          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
           class="flex items-center pl-12 pr-4 py-3 text-gray-700 text-sm hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
           <i data-feather="users" class="w-4 h-4 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
           <span>Empleados</span>
         </a>
-        <a 
-          (click)="closeSidebar()" 
-          routerLink="/roles" 
-          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+        <a (click)="closeSidebar()" routerLink="/customers"
+          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
+          class="flex items-center pl-12 pr-4 py-3 text-gray-700 text-sm hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
+          <i data-feather="users" class="w-4 h-4 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
+          <span>Clientes</span>
+        </a>
+        <a (click)="closeSidebar()" routerLink="/roles"
+          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
           class="flex items-center pl-12 pr-4 py-3 text-gray-700 text-sm hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
           <i data-feather="shield" class="w-4 h-4 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
           <span>Rol</span>
         </a>
-        <a 
-          (click)="closeSidebar()" 
-          routerLink="/permisos" 
-          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+        <a (click)="closeSidebar()" routerLink="/permisos"
+          routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
           class="flex items-center pl-12 pr-4 py-3 text-gray-700 text-sm hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
           <i data-feather="key" class="w-4 h-4 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
           <span>Permiso</span>
         </a>
       </div>
     </div>
-    
+
     <!-- Inventario -->
-    <a 
-      (click)="closeSidebar()" 
-      routerLink="/inventario" 
-      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+    <a (click)="closeSidebar()" routerLink="/inventario"
+      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
       class="flex items-center px-4 py-3 mb-2 text-primary text-base font-medium hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
       <i data-feather="package" class="w-5 h-5 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
       <span>Inventario</span>
     </a>
-    
+
     <!-- Compras -->
-    <a 
-      (click)="closeSidebar()" 
-      routerLink="/compras" 
-      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+    <a (click)="closeSidebar()" routerLink="/compras"
+      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
       class="flex items-center px-4 py-3 mb-2 text-primary text-base font-medium hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
-      <i data-feather="shopping-cart" class="w-5 h-5 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
+      <i data-feather="shopping-cart"
+        class="w-5 h-5 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
       <span>Compras</span>
     </a>
-    
+
     <!-- Marcar Horas -->
-    <a 
-      (click)="closeSidebar()" 
-      routerLink="/marcar-horas" 
-      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+    <a (click)="closeSidebar()" routerLink="/marcar-horas"
+      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
       class="flex items-center px-4 py-3 mb-2 text-primary text-base font-medium hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
       <i data-feather="clock" class="w-5 h-5 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
       <span>Marcar Horas</span>
     </a>
-    
+
     <!-- Reportes -->
-    <a 
-      (click)="closeSidebar()" 
-      routerLink="/reportes" 
-      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
+    <a (click)="closeSidebar()" routerLink="/reportes"
+      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
       class="flex items-center px-4 py-3 mb-2 text-primary text-base font-medium hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
       <i data-feather="bar-chart-2" class="w-5 h-5 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
       <span>Reportes</span>
     </a>
-    
+
     <!-- Divider -->
     <hr class="my-4 border-primary border-opacity-20" />
-    
+
     <!-- Dashboard link -->
-    <a 
-      (click)="closeSidebar()" 
-      routerLink="/" 
-      routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary" 
-      [routerLinkActiveOptions]="{exact: true}" 
+    <a (click)="closeSidebar()" routerLink="/" routerLinkActive="bg-secondary bg-opacity-20 font-semibold text-primary"
+      [routerLinkActiveOptions]="{exact: true}"
       class="flex items-center px-4 py-3 text-primary text-base font-medium hover:bg-secondary hover:bg-opacity-10 rounded-lg transition-all group">
       <i data-feather="activity" class="w-5 h-5 mr-3 text-secondary group-hover:scale-110 transition-transform"></i>
       <span>Dashboard</span>
     </a>
   </div>
-  
+
   <!-- Sidenav Footer-->
-  <div class="sticky bottom-0 left-0 right-0 border-t border-primary border-opacity-20 bg-white" style="margin-top: auto;">
+  <div class="sticky bottom-0 left-0 right-0 border-t border-primary border-opacity-20 bg-white"
+    style="margin-top: auto;">
     <div class="px-4 py-4">
       <div class="flex items-center">
         <div class="w-10 h-10 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center mr-3">

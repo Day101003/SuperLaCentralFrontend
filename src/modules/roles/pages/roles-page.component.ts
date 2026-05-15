@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { DataTableComponent, TableColumn, TableAction } from '../../../shared/components/data-table.component';
 import { PaginationComponent } from '../../../shared/components/pagination.component';
 import { usePagination } from '../../../shared/composables/use-pagination';
@@ -11,7 +11,7 @@ import { RoleFormSidebarComponent } from '../components/role-form-sidebar/role-f
 @Component({
   selector: 'app-roles-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, DataTableComponent, PaginationComponent, RoleFormSidebarComponent],
+  imports: [CommonModule, DataTableComponent, PaginationComponent, RoleFormSidebarComponent],
   templateUrl: './roles-page.component.html',
   styleUrl: './roles-page.component.css'
 })
