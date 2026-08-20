@@ -1,0 +1,194 @@
+<div class="mb-8">
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Inventario</p>
+      <h1 class="text-4xl font-bold text-gray-900">Productos</h1>
+    </div>
+    <button
+      (click)="createProduct()"
+      class="px-4 py-2 bg-primary hover:bg-primary-700 text-white rounded-lg flex items-center gap-2"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line></svg
+      >Crear Nuevo Producto
+    </button>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-5xl">
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+    <div class="flex items-center justify-between mb-2">
+      <div class="bg-blue-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-primary"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+          ></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+      </div>
+      <span class="text-xl font-bold text-gray-900">{{ products().length }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Total Productos</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+    <div class="flex items-center justify-between mb-2">
+      <div class="bg-yellow-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-yellow-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+          ></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+      <span class="text-xl font-bold text-gray-900">{{ lowStockCount() }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Stock bajo</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+    <div class="flex items-center justify-between mb-2">
+      <div class="bg-red-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-red-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <span class="text-xl font-bold text-gray-900">{{ outOfStockCount() }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Agotados</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    <p class="mt-4 text-gray-600">Cargando productos...</p>
+  </div>
+}
+@if (error() && !loading()) {
+  <div
+    class="bg-red-50 border border-red-200 rounded-xl p-6 mb-6 flex items-center justify-between"
+  >
+    <p class="text-red-600 text-sm">{{ error() }}</p>
+    <button (click)="loadProducts()" class="px-4 py-2 bg-red-100 text-red-700 rounded-lg">
+      Reintentar
+    </button>
+  </div>
+}
+@if (!loading() && !error()) {
+  <app-data-table
+    [columns]="tableColumns"
+    [data]="pagination.paginatedItems()"
+    [actions]="tableActions"
+    [showSearch]="true"
+    [showFooter]="true"
+    [trackBy]="'id_product'"
+    [startRecord]="pagination.startRecord()"
+    [endRecord]="pagination.endRecord()"
+    [totalRecords]="pagination.totalItems()"
+    (search)="onSearch($event)"
+    emptyMessage="No se encontraron productos"
+  >
+    <app-pagination
+      slot="pagination"
+      [currentPage]="pagination.currentPage()"
+      [totalPages]="pagination.totalPages()"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </app-data-table>
+}
+
+@if (selectedProduct) {
+  <div
+    class="fixed inset-0 z-[999] bg-black/40 flex items-center justify-center p-4"
+    (click)="selectedProduct = null"
+  >
+    <div
+      class="w-full max-w-md bg-white rounded-2xl shadow-xl p-6"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="flex items-start justify-between mb-5">
+        <div>
+          <p class="text-sm text-gray-500">Proveedores de</p>
+          <h2 class="text-xl font-bold text-gray-900">{{ selectedProduct.product_name }}</h2>
+        </div>
+        <button
+          type="button"
+          (click)="selectedProduct = null"
+          class="text-gray-400 hover:text-gray-700"
+          aria-label="Cerrar"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+          >
+            <path d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      @if (supplierNames(selectedProduct).length > 0) {
+        <ul class="space-y-2">
+          @for (supplier of supplierNames(selectedProduct); track supplier) {
+            <li
+              class="flex items-center gap-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3"
+            >
+              <svg
+                class="w-5 h-5 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+              >
+                <path
+                  d="M3 21h18M5 21V7l8-4v18M13 9h6v12M8 9h2M8 13h2M8 17h2M16 13h1M16 17h1"
+                /></svg
+              ><span class="text-sm font-medium text-gray-700">{{ supplier }}</span>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="rounded-lg bg-gray-50 p-4 text-sm text-gray-500">
+          Este producto no tiene proveedores asignados.
+        </p>
+      }
+    </div>
+  </div>
+}

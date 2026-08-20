@@ -3,91 +3,126 @@
     <!-- Left Section: Toggle + Brand -->
     <div class="flex items-center gap-4">
       <!-- Sidenav Toggle Button -->
-      <button 
-        class="p-2.5 text-white hover:bg-secondary hover:text-primary rounded-lg transition-all duration-200 hover:scale-105" 
-        id="sidebarToggle" 
+      <button
+        class="p-2.5 text-white hover:bg-secondary hover:text-primary rounded-lg transition-all duration-200 hover:scale-105"
+        id="sidebarToggle"
         (click)="toggleSidebar()"
-        title="Toggle Menu">
+        title="Toggle Menu"
+      >
         <i data-feather="menu" class="w-5 h-5"></i>
       </button>
-      
+
       <!-- Navbar Brand with Logo -->
       <a class="flex items-center gap-3 group" routerLink="/">
-        <img src="logo2.svg" alt="La Central" class="h-10 w-auto">
+        <img src="logo2.svg" alt="La Central" class="h-10 w-auto" />
         <div class="hidden md:block">
-          <span class="text-white font-bold text-base tracking-wide block leading-tight">LA CENTRAL</span>
+          <span class="text-white font-bold text-base tracking-wide block leading-tight"
+            >LA CENTRAL</span
+          >
           <span class="text-secondary text-xs font-medium">SUPERMERCADO</span>
         </div>
       </a>
     </div>
-    
+
     <!-- Center Section: Search Bar -->
     <form class="flex-1 max-w-xl mx-8 hidden lg:block">
       <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <i data-feather="search" class="text-gray-400 w-5 h-5"></i>
         </div>
-        <input 
-          class="w-full py-2.5 pl-10 pr-4 bg-white rounded-lg outline-none text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-300 transition-all" 
-          type="search" 
-          placeholder="Buscar inventario, compras..." 
-          aria-label="Search" 
+        <input
+          class="w-full py-2.5 pl-10 pr-4 bg-white rounded-lg outline-none text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-300 transition-all"
+          type="search"
+          placeholder="Buscar inventario, compras..."
+          aria-label="Search"
         />
       </div>
     </form>
-    
+
     <!-- Right Section: Actions -->
     <div class="flex items-center gap-2">
       <!-- Notifications Button -->
-      <button 
+      <button
         class="relative p-2.5 text-white hover:bg-secondary hover:text-primary rounded-lg transition-all duration-200 hover:scale-105 hidden md:block"
-        title="Notificaciones">
+        title="Notificaciones"
+      >
         <i data-feather="bell" class="w-5 h-5"></i>
         <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
       </button>
-      
+
       <!-- Messages Button -->
-      <button 
+      <button
         class="relative p-2.5 text-white hover:bg-secondary hover:text-primary rounded-lg transition-all duration-200 hover:scale-105 hidden md:block"
-        title="Mensajes">
+        title="Mensajes"
+      >
         <i data-feather="mail" class="w-5 h-5"></i>
         <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-green-500 rounded-full"></span>
       </button>
-      
+
       <!-- Search Icon (Mobile) -->
-      <button 
+      <button
         class="lg:hidden p-2.5 text-white hover:bg-secondary hover:text-primary rounded-lg transition-all duration-200"
-        title="Buscar">
+        title="Buscar"
+      >
         <i data-feather="search" class="w-5 h-5"></i>
       </button>
-      
+
       <!-- Divider -->
       <div class="hidden md:block w-px h-8 bg-secondary bg-opacity-30 mx-2"></div>
-      
+
       <!-- User Profile Dropdown -->
-      <div class="relative group">
-        <button class="flex items-center gap-2 px-3 py-2 text-white hover:bg-secondary hover:text-primary rounded-lg transition-all duration-200">
-          <div class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center">
+      <div class="relative">
+        <button
+          type="button"
+          (click)="toggleUserMenu($event)"
+          [attr.aria-expanded]="isUserMenuOpen"
+          aria-haspopup="menu"
+          class="flex items-center gap-2 px-3 py-2 text-white hover:bg-secondary hover:text-primary rounded-lg transition-all duration-200"
+          [class.bg-secondary]="isUserMenuOpen"
+          [class.text-primary]="isUserMenuOpen"
+        >
+          <div
+            class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center"
+          >
             <i data-feather="user" class="w-5 h-5"></i>
           </div>
           <div class="hidden xl:block text-left">
             <p class="text-xs text-secondary">Bienvenido</p>
-            <p class="text-sm font-semibold leading-tight">{{ currentUser?.name_user || 'Usuario' }}</p>
+            <p class="text-sm font-semibold leading-tight">
+              {{ currentUser?.name_user || 'Usuario' }}
+            </p>
           </div>
-          <i data-feather="chevron-down" class="w-4 h-4 hidden xl:block"></i>
+          <i
+            data-feather="chevron-down"
+            class="w-4 h-4 hidden xl:block transition-transform"
+            [class.rotate-180]="isUserMenuOpen"
+          ></i>
         </button>
-        
+
         <!-- Dropdown Menu -->
-        <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl hidden group-hover:block z-50 border border-gray-100">
+        <div
+          role="menu"
+          [class.hidden]="!isUserMenuOpen"
+          class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl z-50 border border-gray-100"
+        >
           <div class="px-4 py-3 border-b border-gray-100">
             <p class="text-xs text-gray-500">Sesión iniciada como</p>
-            <p class="text-sm font-semibold text-primary mt-0.5">{{ currentUser?.name_user || 'Usuario' }} {{ currentUser?.lastname || '' }}</p>
-            <p class="text-xs text-gray-400 mt-0.5">{{ currentUser?.email || 'usuario@lacentral.com' }}</p>
+            <p class="text-sm font-semibold text-primary mt-0.5">
+              {{ currentUser?.name_user || 'Usuario' }} {{ currentUser?.lastname || '' }}
+            </p>
+            <p class="text-xs text-gray-400 mt-0.5">
+              {{ currentUser?.email || 'usuario@lacentral.com' }}
+            </p>
           </div>
-          
+
           <div class="py-2">
-            <a class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-secondary hover:bg-opacity-10 transition-colors group/item" href="#!">
-              <div class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-opacity-30 transition-colors">
+            <a
+              class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-secondary hover:bg-opacity-10 transition-colors group/item"
+              href="#!"
+            >
+              <div
+                class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-opacity-30 transition-colors"
+              >
                 <i data-feather="user" class="w-4 h-4 text-primary"></i>
               </div>
               <div>
@@ -95,9 +130,14 @@
                 <p class="text-xs text-gray-500">Ver y editar perfil</p>
               </div>
             </a>
-            
-            <a class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-secondary hover:bg-opacity-10 transition-colors group/item" href="#!">
-              <div class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-opacity-30 transition-colors">
+
+            <a
+              class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-secondary hover:bg-opacity-10 transition-colors group/item"
+              href="#!"
+            >
+              <div
+                class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-opacity-30 transition-colors"
+              >
                 <i data-feather="settings" class="w-4 h-4 text-primary"></i>
               </div>
               <div>
@@ -105,9 +145,14 @@
                 <p class="text-xs text-gray-500">Ajustes de cuenta</p>
               </div>
             </a>
-            
-            <a class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-secondary hover:bg-opacity-10 transition-colors group/item" href="#!">
-              <div class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-opacity-30 transition-colors">
+
+            <a
+              class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-secondary hover:bg-opacity-10 transition-colors group/item"
+              href="#!"
+            >
+              <div
+                class="w-8 h-8 bg-secondary bg-opacity-20 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-opacity-30 transition-colors"
+              >
                 <i data-feather="help-circle" class="w-4 h-4 text-primary"></i>
               </div>
               <div>
@@ -116,12 +161,15 @@
               </div>
             </a>
           </div>
-          
+
           <div class="border-t border-gray-100 py-2">
-            <button 
+            <button
               (click)="logout()"
-              class="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors group/item">
-              <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-red-200 transition-colors">
+              class="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors group/item"
+            >
+              <div
+                class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-red-200 transition-colors"
+              >
                 <i data-feather="log-out" class="w-4 h-4 text-red-600"></i>
               </div>
               <p class="font-medium">Cerrar Sesión</p>

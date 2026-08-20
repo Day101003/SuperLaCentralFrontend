@@ -1,4 +1,12 @@
-import { Component, AfterViewInit, EventEmitter, Output, inject } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Output,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../modules/auth/service/auth.service';
@@ -8,15 +16,17 @@ import { AuthService } from '../../../modules/auth/service/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements AfterViewInit {
   @Output() sidebarToggle = new EventEmitter<void>();
-  
+
   private authService = inject(AuthService);
   private router = inject(Router);
-  
+  private elementRef = inject(ElementRef<HTMLElement>);
+
   currentUser: any = null;
+  isUserMenuOpen = false;
 
   constructor() {
     this.loadCurrentUser();
@@ -26,11 +36,31 @@ export class NavbarComponent implements AfterViewInit {
     this.sidebarToggle.emit();
   }
 
+  toggleUserMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  closeUserMenu(): void {
+    this.isUserMenuOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target as Node)) this.closeUserMenu();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeUserMenu();
+  }
+
   loadCurrentUser(): void {
     this.currentUser = this.authService.getCurrentUser();
   }
 
   logout(): void {
+    this.closeUserMenu();
     this.authService.logout();
     this.router.navigate(['/auth/login']);
   }

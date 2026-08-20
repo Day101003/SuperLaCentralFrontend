@@ -1,0 +1,19 @@
+﻿<div class="mb-8">
+  <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
+    <a routerLink="/dashboard" class="hover:text-primary">Dashboard</a><span>â€º</span
+    ><a routerLink="/inventory/products" class="hover:text-primary">Productos</a><span>â€º</span
+    ><span class="text-gray-900 font-medium">Crear Producto</span>
+  </div>
+  <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">GestiÃ³n de Inventario</p>
+  <h1 class="text-4xl font-bold text-gray-900">Crear Producto</h1>
+</div>
+<div class="max-w-5xl mx-auto">
+  <app-product-form
+    mode="create"
+    [categories]="categories()"
+    [suppliers]="suppliers()"
+    [loading]="loading"
+    (formSubmit)="onSubmit($event)"
+    (formCancel)="onCancel()"
+  ></app-product-form>
+</div>

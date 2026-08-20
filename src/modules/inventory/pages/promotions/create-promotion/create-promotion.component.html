@@ -1,0 +1,18 @@
+<div class="mb-8">
+  <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
+    <a routerLink="/dashboard" class="hover:text-primary">Dashboard</a><span>›</span
+    ><a routerLink="/inventory/promotions" class="hover:text-primary">Promociones</a><span>›</span
+    ><span class="text-gray-900 font-medium">Crear Promoción</span>
+  </div>
+  <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Inventario</p>
+  <h1 class="text-4xl font-bold text-gray-900">Crear Promoción</h1>
+</div>
+<div class="max-w-5xl mx-auto">
+  <app-promotion-form
+    mode="create"
+    [products]="products()"
+    [loading]="loading"
+    (formSubmit)="submit($event)"
+    (formCancel)="cancel()"
+  ></app-promotion-form>
+</div>

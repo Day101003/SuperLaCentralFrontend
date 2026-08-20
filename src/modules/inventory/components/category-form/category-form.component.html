@@ -1,0 +1,148 @@
+<div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-8">
+    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+      <div class="bg-blue-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-primary"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 13V6a2 2 0 0 0-2-2h-5L9 2H4a2 2 0 0 0-2 2v9"></path>
+          <path d="M2 13h20v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"></path>
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-gray-900">Información de la Categoría</h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6">
+      <div>
+        <label for="category_name" class="block text-sm font-semibold text-gray-700 mb-2">
+          Nombre <span class="text-red-500">*</span>
+        </label>
+        <input
+          id="category_name"
+          type="text"
+          formControlName="category_name"
+          placeholder="Ingrese el nombre"
+          [class]="
+            'w-full px-4 py-3 rounded-lg border transition-all ' +
+            (invalid('category_name')
+              ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
+              : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')
+          "
+        />
+        @if (invalid('category_name')) {
+          <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            @if (form.controls.category_name.errors?.['required']) {
+              <span>El nombre es requerido.</span>
+            } @else if (form.controls.category_name.errors?.['minlength']) {
+              <span>El nombre debe tener al menos 2 caracteres.</span>
+            } @else {
+              <span>El nombre no puede superar 200 caracteres.</span>
+            }
+          </p>
+        }
+      </div>
+
+      <div>
+        <label for="category_description" class="block text-sm font-semibold text-gray-700 mb-2"
+          >Descripción</label
+        >
+        <textarea
+          id="category_description"
+          rows="4"
+          formControlName="category_description"
+          placeholder="Ingrese una descripción"
+          [class]="
+            'w-full px-4 py-3 rounded-lg border transition-all resize-none ' +
+            (invalid('category_description')
+              ? 'border-red-300 bg-red-50'
+              : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')
+          "
+        ></textarea>
+        @if (invalid('category_description')) {
+          <p class="mt-2 text-sm text-red-600">La descripción no puede superar 200 caracteres.</p>
+        }
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-3 pt-6 mt-8 border-t border-gray-200">
+      <button
+        type="button"
+        (click)="formCancel.emit()"
+        [disabled]="loading"
+        class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium disabled:opacity-50 flex items-center gap-2"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="px-6 py-3 bg-primary hover:bg-primary-700 text-white rounded-lg font-medium disabled:opacity-50 flex items-center gap-2"
+      >
+        @if (loading) {
+          <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            ></path>
+          </svg>
+          <span>Guardando...</span>
+        } @else {
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <span>{{ mode === 'edit' ? 'Guardar Cambios' : 'Crear Categoría' }}</span>
+        }
+      </button>
+    </div>
+  </form>
+</div>

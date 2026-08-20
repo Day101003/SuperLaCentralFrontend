@@ -1,0 +1,236 @@
+<div class="mb-8">
+  <div class="flex items-center justify-between relative">
+    <div class="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 -z-10"></div>
+    <div
+      class="absolute top-5 left-0 h-0.5 bg-primary transition-all duration-500 -z-10"
+      [style.width.%]="((currentStep - 1) / (totalSteps - 1)) * 100"
+    ></div>
+    @for (step of steps; track step.number) {
+      <div class="flex flex-col items-center flex-1">
+        <button
+          type="button"
+          (click)="goToStep(step.number)"
+          [disabled]="step.number > currentStep && !isStepValid(currentStep)"
+          [class]="
+            'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ' +
+            (currentStep === step.number
+              ? 'bg-primary text-white shadow-lg scale-110'
+              : currentStep > step.number || isStepValid(step.number)
+                ? 'bg-primary text-white cursor-pointer hover:scale-105'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed')
+          "
+        >
+          @if (currentStep > step.number) {
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+            >
+              <path d="m5 12 4 4L19 6" />
+            </svg>
+          } @else {
+            <span class="font-bold">{{ step.number }}</span>
+          }
+        </button>
+        <p
+          [class]="
+            'mt-2 text-sm font-medium ' +
+            (currentStep === step.number ? 'text-primary' : 'text-gray-500')
+          "
+        >
+          {{ step.title }}
+        </p>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="p-8">
+    @if (currentStep === 1) {
+      <section>
+        <div class="section-title">
+          <div class="icon-box">
+            <svg
+              class="w-5 h-5 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+            >
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+              />
+            </svg>
+          </div>
+          <h2>Información General</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="label">Nombre <span class="text-red-500">*</span></label
+            ><input
+              formControlName="product_name"
+              class="field"
+              [class.field-error]="invalid('product_name')"
+              placeholder="Nombre del producto"
+            />
+            @if (invalid('product_name')) {
+              <p class="error">Ingrese un nombre válido de al menos 2 caracteres.</p>
+            }
+          </div>
+          <div>
+            <label class="label">Categoría <span class="text-red-500">*</span></label
+            ><select
+              formControlName="id_category"
+              class="field"
+              [class.field-error]="invalid('id_category')"
+            >
+              <option [ngValue]="0">Seleccione una categoría</option>
+              @for (category of categories; track category.id_category) {
+                <option [ngValue]="category.id_category">{{ category.category_name }}</option>
+              }
+            </select>
+            @if (invalid('id_category')) {
+              <p class="error">Seleccione una categoría.</p>
+            }
+          </div>
+          <div class="md:col-span-2">
+            <label class="label">Descripción</label
+            ><textarea
+              formControlName="product_description"
+              rows="4"
+              class="field resize-none"
+              [class.field-error]="invalid('product_description')"
+            ></textarea>
+            @if (invalid('product_description')) {
+              <p class="error">Máximo 200 caracteres.</p>
+            }
+          </div>
+        </div>
+      </section>
+    }
+
+    @if (currentStep === 2) {
+      <section>
+        <div class="section-title">
+          <div class="icon-box">
+            <svg
+              class="w-5 h-5 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+            >
+              <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </div>
+          <h2>Precio e Inventario</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="label">Precio de venta <span class="text-red-500">*</span></label
+            ><input
+              type="number"
+              min="0.01"
+              step="0.01"
+              formControlName="sale_price"
+              class="field"
+              [class.field-error]="invalid('sale_price')"
+            />
+            @if (invalid('sale_price')) {
+              <p class="error">El precio debe ser mayor que cero.</p>
+            }
+          </div>
+          <div>
+            <label class="label">Stock <span class="text-red-500">*</span></label
+            ><input
+              type="number"
+              min="0"
+              step="1"
+              formControlName="stock"
+              class="field"
+              [class.field-error]="invalid('stock')"
+            />
+            @if (invalid('stock')) {
+              <p class="error">Ingrese una cantidad entera válida.</p>
+            }
+          </div>
+          <div>
+            <label class="label">Estado</label
+            ><select formControlName="status_product" class="field">
+              <option [ngValue]="1">Activo</option>
+              <option [ngValue]="0">Inactivo</option>
+            </select>
+          </div>
+        </div>
+      </section>
+    }
+
+    @if (currentStep === 3) {
+      <section>
+        <div class="section-title">
+          <div class="icon-box">
+            <svg
+              class="w-5 h-5 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+            >
+              <path d="M3 21h18M5 21V7l8-4v18M13 9h6v12" />
+            </svg>
+          </div>
+          <h2>Proveedores</h2>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">
+          Seleccione uno o varios proveedores para este producto.
+        </p>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4"
+        >
+          @for (supplier of suppliers; track supplier.id_supplier) {
+            <label
+              class="flex items-center gap-3 rounded-lg bg-white border border-gray-100 px-4 py-3 cursor-pointer hover:border-primary/30"
+              ><input
+                type="checkbox"
+                [checked]="productForm.controls.supplier_ids.value.includes(supplier.id_supplier)"
+                (change)="toggleSupplier(supplier.id_supplier, $any($event.target).checked)"
+                class="w-4 h-4 accent-primary"
+              /><span class="text-sm font-medium text-gray-700">{{
+                supplier.supplier_name
+              }}</span></label
+            >
+          } @empty {
+            <p class="text-sm text-gray-500">No hay proveedores registrados.</p>
+          }
+        </div>
+      </section>
+    }
+
+    <div class="flex items-center justify-between pt-6 mt-8 border-t border-gray-200">
+      <div>
+        @if (currentStep > 1) {
+          <button type="button" (click)="previousStep()" [disabled]="loading" class="btn-secondary">
+            Anterior
+          </button>
+        }
+      </div>
+      <div class="flex gap-3">
+        <button type="button" (click)="onCancel()" [disabled]="loading" class="btn-secondary">
+          Cancelar
+        </button>
+        @if (currentStep < totalSteps) {
+          <button type="button" (click)="nextStep()" [disabled]="loading" class="btn-primary">
+            Siguiente
+          </button>
+        } @else {
+          <button type="submit" [disabled]="loading" class="btn-primary">
+            {{ loading ? 'Guardando...' : mode === 'edit' ? 'Guardar Cambios' : 'Crear Producto' }}
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+</div>

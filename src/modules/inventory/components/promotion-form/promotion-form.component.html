@@ -1,0 +1,128 @@
+<div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-8">
+    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+      <div class="bg-yellow-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-yellow-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M20.59 13.41 11 3.83V3H4v7h.83l9.58 9.59a2 2 0 0 0 2.82 0l3.36-3.36a2 2 0 0 0 0-2.82z"
+          ></path>
+          <line x1="7" y1="6" x2="7.01" y2="6"></line>
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-gray-900">Información de la Promoción</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="id_product">Producto <span>*</span></label
+        ><select
+          id="id_product"
+          formControlName="id_product"
+          class="field"
+          [class.error-field]="invalid('id_product')"
+        >
+          <option [ngValue]="0">Seleccione un producto</option>
+          @for (product of products; track product.id_product) {
+            <option [ngValue]="product.id_product">{{ product.product_name }}</option>
+          }
+        </select>
+        @if (invalid('id_product')) {
+          <p class="error">Seleccione un producto.</p>
+        }
+      </div>
+      <div>
+        <label for="discount">Descuento (%) <span>*</span></label
+        ><input
+          id="discount"
+          type="number"
+          min="0.01"
+          max="100"
+          step="0.01"
+          formControlName="discount"
+          class="field"
+          [class.error-field]="invalid('discount')"
+        />
+        @if (invalid('discount')) {
+          <p class="error">Ingrese un descuento entre 0.01 y 100.</p>
+        }
+      </div>
+      <div>
+        <label for="start_date">Fecha inicial <span>*</span></label
+        ><input
+          id="start_date"
+          type="datetime-local"
+          formControlName="start_date"
+          class="field"
+          [class.error-field]="invalid('start_date')"
+        />
+      </div>
+      <div>
+        <label for="end_date">Fecha final <span>*</span></label
+        ><input
+          id="end_date"
+          type="datetime-local"
+          formControlName="end_date"
+          class="field"
+          [class.error-field]="invalid('end_date')"
+        />
+      </div>
+      <div class="md:col-span-2">
+        <label for="description">Descripción</label
+        ><textarea
+          id="description"
+          rows="4"
+          formControlName="description"
+          class="field resize-none"
+          placeholder="Describe la promoción"
+        ></textarea>
+        @if (invalid('description')) {
+          <p class="error">La descripción no puede superar 200 caracteres.</p>
+        }
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 pt-6 mt-8 border-t border-gray-200">
+      <button type="button" (click)="formCancel.emit()" [disabled]="loading" class="secondary">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path d="M6 18 18 6M6 6l12 12"></path></svg
+        >Cancelar
+      </button>
+      <button type="submit" [disabled]="loading" class="primary">
+        @if (loading) {
+          <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            ></path></svg
+          ><span>Guardando...</span>
+        } @else {
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+          >
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <path d="M17 21v-8H7v8M7 3v5h8"></path></svg
+          ><span>{{ mode === 'edit' ? 'Guardar Cambios' : 'Crear Promoción' }}</span>
+        }
+      </button>
+    </div>
+  </form>
+</div>

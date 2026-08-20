@@ -1,0 +1,101 @@
+<div class="mb-8">
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Inventario</p>
+      <h1 class="text-4xl font-bold text-gray-900">Categorías</h1>
+    </div>
+    <button
+      (click)="createCategory()"
+      class="px-4 py-2 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors flex items-center gap-2"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Crear Nueva Categoría
+    </button>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 max-w-3xl">
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+    <div class="flex items-center justify-between mb-2">
+      <div class="bg-blue-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-primary-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+        >
+          <path d="M20 13V6a2 2 0 0 0-2-2h-5L9 2H4a2 2 0 0 0-2 2v9" />
+          <path d="M2 13h20v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z" />
+        </svg>
+      </div>
+      <span class="text-xl font-bold text-gray-900">{{ categories().length }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Total Categorías</p>
+    <p class="text-xs text-gray-500 mt-1">Registradas en el sistema</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+    <div class="flex items-center justify-between mb-2">
+      <div class="bg-yellow-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-yellow-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+        >
+          <path d="M4 4h16v16H4z" />
+          <path d="M8 9h8M8 13h6" />
+        </svg>
+      </div>
+      <span class="text-xl font-bold text-gray-900">{{ withDescriptionCount() }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Con descripción</p>
+    <p class="text-xs text-gray-500 mt-1">Categorías documentadas</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    <p class="mt-4 text-gray-600">Cargando categorías...</p>
+  </div>
+}
+@if (error() && !loading()) {
+  <div
+    class="bg-red-50 border border-red-200 rounded-xl p-6 mb-6 flex items-center justify-between"
+  >
+    <p class="text-red-600 text-sm">{{ error() }}</p>
+    <button
+      (click)="loadCategories()"
+      class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-sm font-medium"
+    >
+      Reintentar
+    </button>
+  </div>
+}
+@if (!loading() && !error()) {
+  <app-data-table
+    [columns]="tableColumns"
+    [data]="pagination.paginatedItems()"
+    [actions]="tableActions"
+    [showSearch]="true"
+    [showFooter]="true"
+    [trackBy]="'id_category'"
+    [startRecord]="pagination.startRecord()"
+    [endRecord]="pagination.endRecord()"
+    [totalRecords]="pagination.totalItems()"
+    (search)="onSearch($event)"
+    emptyMessage="No se encontraron categorías"
+  >
+    <app-pagination
+      slot="pagination"
+      [currentPage]="pagination.currentPage()"
+      [totalPages]="pagination.totalPages()"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </app-data-table>
+}

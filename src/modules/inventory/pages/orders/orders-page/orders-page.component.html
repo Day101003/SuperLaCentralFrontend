@@ -1,0 +1,104 @@
+<div class="mb-8">
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Inventario</p>
+      <h1 class="text-4xl font-bold text-gray-900">Órdenes de Compra</h1>
+    </div>
+    <button
+      (click)="createOrder()"
+      class="px-4 py-2 bg-primary text-white rounded-lg flex items-center gap-2"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path d="M12 5v14M5 12h14"></path></svg
+      >Crear Nueva Orden
+    </button>
+  </div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+  <div class="kpi">
+    <div class="kpi-row">
+      <div class="icon blue">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path d="M6 2h9l5 5v15H6zM14 2v6h6M9 13h8M9 17h8"></path>
+        </svg>
+      </div>
+      <strong>{{ orders().length }}</strong>
+    </div>
+    <p>Total Órdenes</p>
+  </div>
+  <div class="kpi">
+    <div class="kpi-row">
+      <div class="icon yellow">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 7v5l3 2"></path>
+        </svg>
+      </div>
+      <strong>{{ pendingCount() }}</strong>
+    </div>
+    <p>Pendientes</p>
+  </div>
+  <div class="kpi">
+    <div class="kpi-row">
+      <div class="icon green">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="m8 12 2.5 2.5L16 9"></path>
+        </svg>
+      </div>
+      <strong>{{ receivedCount() }}</strong>
+    </div>
+    <p>Recibidas</p>
+  </div>
+  <div class="kpi">
+    <div class="kpi-row">
+      <div class="icon red">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="m9 9 6 6M15 9l-6 6"></path>
+        </svg>
+      </div>
+      <strong>{{ cancelledCount() }}</strong>
+    </div>
+    <p>Canceladas</p>
+  </div>
+  <div class="kpi">
+    <div class="kpi-row">
+      <div class="icon green">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+      </div>
+      <strong>₡{{ totalAmount().toLocaleString('es-CR') }}</strong>
+    </div>
+    <p>Total comprado</p>
+  </div>
+</div>
+@if (loading()) {
+  <div class="bg-white rounded-xl p-12 text-center">
+    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    <p class="mt-4">Cargando órdenes...</p>
+  </div>
+} @else if (error()) {
+  <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-red-600">{{ error() }}</div>
+} @else {
+  <app-data-table
+    [columns]="tableColumns"
+    [data]="pagination.paginatedItems()"
+    [actions]="tableActions"
+    [showSearch]="true"
+    [showFooter]="true"
+    [trackBy]="'id_order_purchase'"
+    [startRecord]="pagination.startRecord()"
+    [endRecord]="pagination.endRecord()"
+    [totalRecords]="pagination.totalItems()"
+    (search)="onSearch($event)"
+    emptyMessage="No se encontraron órdenes"
+    ><app-pagination
+      slot="pagination"
+      [currentPage]="pagination.currentPage()"
+      [totalPages]="pagination.totalPages()"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination
+  ></app-data-table>
+}

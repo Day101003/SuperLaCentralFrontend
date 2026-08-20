@@ -1,0 +1,56 @@
+:host {
+  display: block
+}
+
+.kpi {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: .75rem;
+  padding: 1rem
+}
+
+.kpi-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem
+}
+
+.kpi strong {
+  font-size: 1.25rem
+}
+
+.kpi p {
+  font-size: .875rem;
+  color: #4b5563
+}
+
+.icon {
+  padding: .5rem;
+  border-radius: .5rem
+}
+
+.icon svg {
+  width: 1.25rem;
+  height: 1.25rem
+}
+
+.blue {
+  background: #eff6ff;
+  color: #1e1b4b
+}
+
+.yellow {
+  background: #fefce8;
+  color: #ca8a04
+}
+
+.green {
+  background: #f0fdf4;
+  color: #16a34a
+}
+
+.red {
+  background: #fef2f2;
+  color: #dc2626
+}

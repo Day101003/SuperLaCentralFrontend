@@ -1,0 +1,12 @@
+<div class="mb-8">
+  <p class="text-sm text-gray-500 uppercase mb-1">Gestión de Inventario</p>
+  <h1 class="text-4xl font-bold">Crear Proveedor</h1>
+</div>
+<div class="max-w-5xl mx-auto">
+  <app-supplier-form
+    mode="create"
+    [loading]="loading"
+    (formSubmit)="submit($event)"
+    (formCancel)="cancel()"
+  />
+</div>

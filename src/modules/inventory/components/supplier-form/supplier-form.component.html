@@ -1,0 +1,49 @@
+<div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-8">
+    <div class="flex items-center gap-3 mb-6 pb-4 border-b">
+      <svg
+        class="w-6 h-6 text-primary"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+      >
+        <path d="M3 21h18M5 21V7l8-4v18M13 9h6v12" />
+      </svg>
+      <h2 class="text-xl font-bold">Información del Proveedor</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label>Nombre *</label
+        ><input
+          formControlName="supplier_name"
+          class="field"
+          [class.error-field]="invalid('supplier_name')"
+        />
+        @if (invalid('supplier_name')) {
+          <p class="error">Ingrese un nombre válido.</p>
+        }
+      </div>
+      <div><label>Empresa</label><input formControlName="company" class="field" /></div>
+      <div><label>Teléfono</label><input formControlName="phone" class="field" /></div>
+      <div>
+        <label>Correo</label
+        ><input
+          type="email"
+          formControlName="email"
+          class="field"
+          [class.error-field]="invalid('email')"
+        />
+        @if (invalid('email')) {
+          <p class="error">Ingrese un correo válido.</p>
+        }
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 pt-6 mt-8 border-t">
+      <button type="button" (click)="formCancel.emit()" class="secondary">Cancelar</button
+      ><button type="submit" [disabled]="loading" class="primary">
+        {{ loading ? 'Guardando...' : mode === 'edit' ? 'Guardar Cambios' : 'Crear Proveedor' }}
+      </button>
+    </div>
+  </form>
+</div>

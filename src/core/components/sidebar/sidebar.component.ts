@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements AfterViewInit {
   isOpen = true; // Iniciar abierto, el CSS se encarga del responsive
@@ -20,8 +20,8 @@ export class SidebarComponent implements AfterViewInit {
   }
 
   toggleInventario() {
-  this.isInventarioOpen = !this.isInventarioOpen;
-}
+    this.isInventarioOpen = !this.isInventarioOpen;
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {

@@ -6,24 +6,104 @@
       <h1 class="text-4xl font-bold text-gray-900">Panel de Control</h1>
     </div>
     <div class="flex items-center gap-4">
-      <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2">
+      <button
+        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2"
+      >
         <i data-feather="filter" class="w-4 h-4"></i>
         Filtrar
       </button>
-      <button class="px-4 py-2 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors flex items-center gap-2">
+      <button
+        class="px-4 py-2 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors flex items-center gap-2"
+      >
         <i data-feather="download" class="w-4 h-4"></i>
         Exportar
       </button>
     </div>
   </div>
-  <p class="text-gray-600">Última actualización: <span class="font-medium">04 Ene 2026, 10:30 AM</span></p>
+  <p class="text-gray-600">
+    Última actualización: <span class="font-medium">04 Ene 2026, 10:30 AM</span>
+  </p>
 </div>
 
 <!-- Grid Asimétrico Principal -->
+<section class="inventory-dashboard-section mb-6">
+  <div class="inventory-section-header">
+    <div>
+      <h2>Resumen de Inventario</h2>
+      <p>Información actual registrada en el sistema</p>
+    </div>
+    <a routerLink="/inventory/products">Ver inventario</a>
+  </div>
+  @if (inventoryLoading) {
+    <div class="inventory-loading">Cargando información de inventario...</div>
+  } @else if (inventoryError) {
+    <div class="inventory-error">
+      <span>No se pudo cargar el resumen de inventario.</span
+      ><button type="button" (click)="loadInventorySummary()">Reintentar</button>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 p-5">
+      <a routerLink="/inventory/products" class="inventory-kpi"
+        ><div class="inventory-kpi-top">
+          <div class="inventory-icon blue">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path d="M21 16V8l-9-5-9 5v8l9 5 9-5zM3.3 7 12 12l8.7-5M12 22V12"></path>
+            </svg>
+          </div>
+          <strong>{{ inventoryTotalProducts }}</strong>
+        </div>
+        <p>Productos registrados</p>
+        <small
+          >{{ inventoryLowStock }} con stock bajo · {{ inventoryOutOfStock }} agotados</small
+        ></a
+      >
+      <a routerLink="/inventory/categories" class="inventory-kpi"
+        ><div class="inventory-kpi-top">
+          <div class="inventory-icon violet">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path d="M20 13V6a2 2 0 0 0-2-2h-5L9 2H4a2 2 0 0 0-2 2v11h16zM2 13h20v7H2z"></path>
+            </svg>
+          </div>
+          <strong>{{ inventoryCategories }}</strong>
+        </div>
+        <p>Categorías</p>
+        <small>{{ inventorySuppliers }} proveedores registrados</small></a
+      >
+      <a routerLink="/inventory/promotions" class="inventory-kpi"
+        ><div class="inventory-kpi-top">
+          <div class="inventory-icon yellow">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path
+                d="M20.6 13.4 11 3.8V3H4v7h.8l9.6 9.6a2 2 0 0 0 2.8 0l3.4-3.4a2 2 0 0 0 0-2.8z"
+              ></path>
+              <circle cx="7" cy="6" r="1"></circle>
+            </svg>
+          </div>
+          <strong>{{ inventoryActivePromotions }}</strong>
+        </div>
+        <p>Promociones activas</p>
+        <small>{{ inventoryPendingOrders }} órdenes pendientes</small></a
+      >
+      <a routerLink="/inventory/orders" class="inventory-kpi"
+        ><div class="inventory-kpi-top">
+          <div class="inventory-icon green">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+        </div>
+        <p>Valor del inventario</p>
+        <strong class="inventory-currency">{{ formatCurrency(inventoryValue) }}</strong></a
+      >
+    </div>
+  }
+</section>
+
 <div class="grid grid-cols-12 gap-6 mb-6">
-  
   <!-- Card Grande: Resumen Financiero -->
-  <div class="col-span-12 lg:col-span-8 bg-gradient-to-br from-primary to-primary-800 rounded-2xl shadow-xl p-8 text-white">
+  <div
+    class="col-span-12 lg:col-span-8 bg-gradient-to-br from-primary to-primary-800 rounded-2xl shadow-xl p-8 text-white"
+  >
     <div class="flex justify-between items-start mb-6">
       <div>
         <h2 class="text-lg font-medium opacity-90 mb-1">Balance Total</h2>
@@ -40,7 +120,7 @@
         <i data-feather="briefcase" class="w-8 h-8"></i>
       </div>
     </div>
-    
+
     <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-white border-opacity-20">
       <div>
         <p class="text-sm opacity-80 mb-1">Ingresos Mes</p>
@@ -59,7 +139,9 @@
 
   <!-- Estadísticas Rápidas -->
   <div class="col-span-12 lg:col-span-4 space-y-6">
-    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-emerald-500 hover:shadow-xl transition-shadow">
+    <div
+      class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-emerald-500 hover:shadow-xl transition-shadow"
+    >
       <div class="flex items-center justify-between mb-3">
         <div class="bg-emerald-50 p-3 rounded-lg">
           <i data-feather="shopping-cart" class="w-6 h-6 text-emerald-600"></i>
@@ -70,7 +152,9 @@
       <p class="text-sm text-emerald-600 font-semibold mt-2">↑ 23% vs mes anterior</p>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-violet-500 hover:shadow-xl transition-shadow">
+    <div
+      class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-violet-500 hover:shadow-xl transition-shadow"
+    >
       <div class="flex items-center justify-between mb-3">
         <div class="bg-violet-50 p-3 rounded-lg">
           <i data-feather="users" class="w-6 h-6 text-violet-600"></i>
@@ -86,12 +170,14 @@
   <div class="col-span-12 lg:col-span-5 bg-white rounded-2xl shadow-lg p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-bold text-gray-900">Evolución Mensual</h3>
-      <select class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary">
+      <select
+        class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+      >
         <option>Últimos 6 meses</option>
         <option>Último año</option>
       </select>
     </div>
-    
+
     <div class="space-y-5">
       <div class="relative">
         <div class="flex justify-between text-xs text-gray-600 mb-2">
@@ -99,57 +185,75 @@
           <span class="font-bold text-gray-900">₡40M</span>
         </div>
         <div class="h-10 bg-gray-100 rounded-lg overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar" style="width: 73%"></div>
+          <div
+            class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar"
+            style="width: 73%"
+          ></div>
         </div>
       </div>
-      
+
       <div class="relative">
         <div class="flex justify-between text-xs text-gray-600 mb-2">
           <span class="font-medium">Noviembre</span>
           <span class="font-bold text-gray-900">₡45M</span>
         </div>
         <div class="h-10 bg-gray-100 rounded-lg overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar" style="width: 82%"></div>
+          <div
+            class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar"
+            style="width: 82%"
+          ></div>
         </div>
       </div>
-      
+
       <div class="relative">
         <div class="flex justify-between text-xs text-gray-600 mb-2">
           <span class="font-medium">Octubre</span>
           <span class="font-bold text-gray-900">₡36M</span>
         </div>
         <div class="h-10 bg-gray-100 rounded-lg overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar" style="width: 65%"></div>
+          <div
+            class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar"
+            style="width: 65%"
+          ></div>
         </div>
       </div>
-      
+
       <div class="relative">
         <div class="flex justify-between text-xs text-gray-600 mb-2">
           <span class="font-medium">Septiembre</span>
           <span class="font-bold text-gray-900">₡42M</span>
         </div>
         <div class="h-10 bg-gray-100 rounded-lg overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar" style="width: 76%"></div>
+          <div
+            class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar"
+            style="width: 76%"
+          ></div>
         </div>
       </div>
-      
+
       <div class="relative">
         <div class="flex justify-between text-xs text-gray-600 mb-2">
           <span class="font-medium">Agosto</span>
           <span class="font-bold text-gray-900">₡38M</span>
         </div>
         <div class="h-10 bg-gray-100 rounded-lg overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar" style="width: 69%"></div>
+          <div
+            class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar"
+            style="width: 69%"
+          ></div>
         </div>
       </div>
-      
+
       <div class="relative">
         <div class="flex justify-between text-xs text-gray-600 mb-2">
           <span class="font-medium">Julio</span>
           <span class="font-bold text-gray-900">₡35M</span>
         </div>
         <div class="h-10 bg-gray-100 rounded-lg overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar" style="width: 64%"></div>
+          <div
+            class="h-full bg-gradient-to-r from-primary to-primary-600 rounded-lg progress-bar"
+            style="width: 64%"
+          ></div>
         </div>
       </div>
     </div>
@@ -161,11 +265,15 @@
       <i data-feather="clock" class="w-5 h-5 text-primary"></i>
       Actividades Recientes
     </h3>
-    
-    <div class="space-y-6 relative before:absolute before:left-[15px] before:top-0 before:bottom-0 before:w-0.5 before:bg-gray-200">
+
+    <div
+      class="space-y-6 relative before:absolute before:left-[15px] before:top-0 before:bottom-0 before:w-0.5 before:bg-gray-200"
+    >
       <!-- Item 1 -->
       <div class="flex gap-4 relative">
-        <div class="w-8 h-8 rounded-full bg-emerald-100 border-4 border-white flex items-center justify-center z-10">
+        <div
+          class="w-8 h-8 rounded-full bg-emerald-100 border-4 border-white flex items-center justify-center z-10"
+        >
           <i data-feather="check" class="w-4 h-4 text-emerald-600"></i>
         </div>
         <div class="flex-1 pb-6">
@@ -179,10 +287,12 @@
           <p class="text-xs text-gray-500 mt-2">Hace 25 minutos</p>
         </div>
       </div>
-      
+
       <!-- Item 2 -->
       <div class="flex gap-4 relative">
-        <div class="w-8 h-8 rounded-full bg-blue-100 border-4 border-white flex items-center justify-center z-10">
+        <div
+          class="w-8 h-8 rounded-full bg-blue-100 border-4 border-white flex items-center justify-center z-10"
+        >
           <i data-feather="user-plus" class="w-4 h-4 text-blue-600"></i>
         </div>
         <div class="flex-1 pb-6">
@@ -191,15 +301,19 @@
               <p class="font-semibold text-gray-900">Nuevo cliente registrado</p>
               <p class="text-sm text-gray-600 mt-1">Comercial Los Ángeles S.A.</p>
             </div>
-            <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full">Nuevo</span>
+            <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full"
+              >Nuevo</span
+            >
           </div>
           <p class="text-xs text-gray-500 mt-2">Hace 2 horas</p>
         </div>
       </div>
-      
+
       <!-- Item 3 -->
       <div class="flex gap-4 relative">
-        <div class="w-8 h-8 rounded-full bg-orange-100 border-4 border-white flex items-center justify-center z-10">
+        <div
+          class="w-8 h-8 rounded-full bg-orange-100 border-4 border-white flex items-center justify-center z-10"
+        >
           <i data-feather="alert-circle" class="w-4 h-4 text-orange-600"></i>
         </div>
         <div class="flex-1 pb-6">
@@ -213,10 +327,12 @@
           <p class="text-xs text-gray-500 mt-2">Hace 5 horas</p>
         </div>
       </div>
-      
+
       <!-- Item 4 -->
       <div class="flex gap-4 relative">
-        <div class="w-8 h-8 rounded-full bg-purple-100 border-4 border-white flex items-center justify-center z-10">
+        <div
+          class="w-8 h-8 rounded-full bg-purple-100 border-4 border-white flex items-center justify-center z-10"
+        >
           <i data-feather="file-text" class="w-4 h-4 text-purple-600"></i>
         </div>
         <div class="flex-1">
@@ -244,11 +360,13 @@
       </h3>
       <p class="text-sm text-gray-500 mt-1">Últimas 5 transacciones</p>
     </div>
-    <button class="px-4 py-2 text-primary hover:bg-primary hover:text-white border-2 border-primary font-semibold rounded-lg transition-all">
+    <button
+      class="px-4 py-2 text-primary hover:bg-primary hover:text-white border-2 border-primary font-semibold rounded-lg transition-all"
+    >
       Ver historial completo
     </button>
   </div>
-  
+
   <div class="divide-y divide-gray-100">
     <!-- Transacción 1 -->
     <div class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
@@ -264,10 +382,13 @@
       </div>
       <div class="text-right">
         <p class="text-xl font-bold text-emerald-600">+₡5,000,000</p>
-        <span class="inline-block mt-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded">Completado</span>
+        <span
+          class="inline-block mt-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded"
+          >Completado</span
+        >
       </div>
     </div>
-    
+
     <!-- Transacción 2 -->
     <div class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
       <div class="flex items-center gap-4 flex-1">
@@ -282,10 +403,13 @@
       </div>
       <div class="text-right">
         <p class="text-xl font-bold text-rose-600">-₡2,500,000</p>
-        <span class="inline-block mt-1 px-2 py-1 bg-rose-50 text-rose-700 text-xs font-semibold rounded">Completado</span>
+        <span
+          class="inline-block mt-1 px-2 py-1 bg-rose-50 text-rose-700 text-xs font-semibold rounded"
+          >Completado</span
+        >
       </div>
     </div>
-    
+
     <!-- Transacción 3 -->
     <div class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
       <div class="flex items-center gap-4 flex-1">
@@ -300,10 +424,13 @@
       </div>
       <div class="text-right">
         <p class="text-xl font-bold text-amber-600">-₡1,200,000</p>
-        <span class="inline-block mt-1 px-2 py-1 bg-yellow-50 text-yellow-700 text-xs font-semibold rounded">Pendiente</span>
+        <span
+          class="inline-block mt-1 px-2 py-1 bg-yellow-50 text-yellow-700 text-xs font-semibold rounded"
+          >Pendiente</span
+        >
       </div>
     </div>
-    
+
     <!-- Transacción 4 -->
     <div class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
       <div class="flex items-center gap-4 flex-1">
@@ -318,10 +445,13 @@
       </div>
       <div class="text-right">
         <p class="text-xl font-bold text-emerald-600">+₡3,200,000</p>
-        <span class="inline-block mt-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded">Completado</span>
+        <span
+          class="inline-block mt-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded"
+          >Completado</span
+        >
       </div>
     </div>
-    
+
     <!-- Transacción 5 -->
     <div class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
       <div class="flex items-center gap-4 flex-1">
@@ -336,7 +466,10 @@
       </div>
       <div class="text-right">
         <p class="text-xl font-bold text-rose-600">-₡8,500,000</p>
-        <span class="inline-block mt-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded">Completado</span>
+        <span
+          class="inline-block mt-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded"
+          >Completado</span
+        >
       </div>
     </div>
   </div>

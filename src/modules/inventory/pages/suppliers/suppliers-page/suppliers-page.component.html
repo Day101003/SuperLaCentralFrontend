@@ -1,0 +1,96 @@
+<div class="mb-8">
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Inventario</p>
+      <h1 class="text-4xl font-bold text-gray-900">Proveedores</h1>
+    </div>
+    <button
+      (click)="createSupplier()"
+      class="px-4 py-2 bg-primary text-white rounded-lg flex items-center gap-2"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line></svg
+      >Crear Nuevo Proveedor
+    </button>
+  </div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 max-w-3xl">
+  <div class="bg-white rounded-xl border p-4">
+    <div class="flex justify-between mb-2">
+      <div class="bg-blue-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-primary"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="1" y="3" width="15" height="13"></rect>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+          <circle cx="5.5" cy="18.5" r="2.5"></circle>
+          <circle cx="18.5" cy="18.5" r="2.5"></circle>
+        </svg>
+      </div>
+      <span class="text-xl font-bold">{{ suppliers().length }}</span>
+    </div>
+    <p class="text-sm text-gray-600">Total Proveedores</p>
+  </div>
+  <div class="bg-white rounded-xl border p-4">
+    <div class="flex justify-between mb-2">
+      <div class="bg-yellow-50 p-2 rounded-lg">
+        <svg
+          class="w-5 h-5 text-yellow-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+          ></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </div>
+      <span class="text-xl font-bold">{{ withEmailCount() }}</span>
+    </div>
+    <p class="text-sm text-gray-600">Con correo registrado</p>
+  </div>
+</div>
+@if (loading()) {
+  <div class="bg-white rounded-xl p-12 text-center">Cargando proveedores...</div>
+} @else if (error()) {
+  <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-red-600">{{ error() }}</div>
+} @else {
+  <app-data-table
+    [columns]="tableColumns"
+    [data]="pagination.paginatedItems()"
+    [actions]="tableActions"
+    [showSearch]="true"
+    [showFooter]="true"
+    [trackBy]="'id_supplier'"
+    [startRecord]="pagination.startRecord()"
+    [endRecord]="pagination.endRecord()"
+    [totalRecords]="pagination.totalItems()"
+    (search)="onSearch($event)"
+    emptyMessage="No se encontraron proveedores"
+    ><app-pagination
+      slot="pagination"
+      [currentPage]="pagination.currentPage()"
+      [totalPages]="pagination.totalPages()"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination
+  ></app-data-table>
+}
