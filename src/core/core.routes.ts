@@ -47,7 +47,20 @@ export const CORE_ROUTES: Routes = [
         loadChildren: () =>
           import('../modules/roles/roles.routes')
             .then(m => m.ROLES_ROUTES)
+      },
+      {
+        path: 'permisos',
+        loadChildren: () =>
+          import('../modules/permissions/permissions.routes')
+            .then(m => m.PERMISSIONS_ROUTES)
+      },
+       {
+        path: 'customers',
+        loadChildren: () =>
+          import('../modules/customers/customers.routes')
+            .then(m => m.CUSTOMERS_ROUTES)
       }
+
     ]
   },
 

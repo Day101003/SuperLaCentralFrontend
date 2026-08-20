@@ -1,0 +1,385 @@
+<!-- Stepper -->
+<div class="mb-8">
+  <div class="flex items-center justify-between relative">
+    <div class="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 -z-10"></div>
+
+    <div
+      class="absolute top-5 left-0 h-0.5 bg-primary transition-all duration-500 -z-10"
+      [style.width.%]="((currentStep - 1) / (totalSteps - 1)) * 100">
+    </div>
+
+    @for (step of steps; track step.number) {
+      <div class="flex flex-col items-center flex-1">
+        <button
+          type="button"
+          (click)="goToStep(step.number)"
+          [disabled]="step.number > currentStep && !isStepValid(currentStep)"
+          [class]="'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ' +
+            (currentStep === step.number
+              ? 'bg-primary text-white shadow-lg scale-110'
+              : currentStep > step.number || isStepValid(step.number)
+                ? 'bg-primary text-white cursor-pointer hover:scale-105'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed')">
+
+          @if (currentStep > step.number || (currentStep === step.number && isStepValid(step.number))) {
+            <i [attr.data-feather]="currentStep > step.number ? 'check' : step.icon" class="w-5 h-5"></i>
+          } @else {
+            <span class="font-bold">{{ step.number }}</span>
+          }
+        </button>
+
+        <p
+          [class]="'mt-2 text-sm font-medium transition-colors ' +
+            (currentStep === step.number ? 'text-primary' : 'text-gray-500')">
+          {{ step.title }}
+        </p>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Form Card -->
+<div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="p-8">
+
+    <!-- Step 1: Información Personal -->
+    @if (currentStep === 1) {
+      <div class="mb-8 step-content">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+          <div class="bg-primary bg-opacity-10 p-2 rounded-lg">
+            <i data-feather="users" class="w-5 h-5 text-primary"></i>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900">Información Personal</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Nombre -->
+          <div>
+            <label for="customer_name" class="block text-sm font-semibold text-gray-700 mb-2">
+              Nombre <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="customer_name"
+              formControlName="customer_name"
+              placeholder="Ingrese el nombre"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' +
+                (customer_name?.invalid && (customer_name?.dirty || customer_name?.touched)
+                  ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
+                  : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+
+            @if (customer_name?.invalid && (customer_name?.dirty || customer_name?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                @if (customer_name?.errors?.['required']) {
+                  <span>El nombre es requerido</span>
+                }
+                @if (customer_name?.errors?.['minlength']) {
+                  <span>El nombre debe tener al menos 2 caracteres</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Apellido -->
+          <div>
+            <label for="last_name" class="block text-sm font-semibold text-gray-700 mb-2">
+              Apellido <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="last_name"
+              formControlName="last_name"
+              placeholder="Ingrese el apellido"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' +
+                (last_name?.invalid && (last_name?.dirty || last_name?.touched)
+                  ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
+                  : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+
+            @if (last_name?.invalid && (last_name?.dirty || last_name?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                @if (last_name?.errors?.['required']) {
+                  <span>El apellido es requerido</span>
+                }
+                @if (last_name?.errors?.['minlength']) {
+                  <span>El apellido debe tener al menos 2 caracteres</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Cédula -->
+          <div>
+            <label for="identity_card" class="block text-sm font-semibold text-gray-700 mb-2">
+              Cédula <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="identity_card"
+              formControlName="identity_card"
+              placeholder="123456789"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' +
+                (identity_card?.invalid && (identity_card?.dirty || identity_card?.touched)
+                  ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
+                  : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+
+            @if (identity_card?.invalid && (identity_card?.dirty || identity_card?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                <span>La cédula es requerida</span>
+              </p>
+            }
+          </div>
+
+          <!-- Edad -->
+          <div>
+            <label for="age" class="block text-sm font-semibold text-gray-700 mb-2">
+              Edad <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              type="number"
+              id="age"
+              formControlName="age"
+              placeholder="Ingrese la edad"
+              min="0"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' +
+                (age?.invalid && (age?.dirty || age?.touched)
+                  ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
+                  : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+
+            @if (age?.invalid && (age?.dirty || age?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                <span>La edad es requerida</span>
+              </p>
+            }
+          </div>
+
+          <!-- Descripción -->
+          <div class="md:col-span-2">
+            <label for="customer_description" class="block text-sm font-semibold text-gray-700 mb-2">
+              Descripción
+            </label>
+
+            <textarea
+              id="customer_description"
+              formControlName="customer_description"
+              rows="3"
+              placeholder="Ingrese una descripción del cliente"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Step 2: Información de Contacto -->
+    @if (currentStep === 2) {
+      <div class="mb-8 step-content">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+          <div class="bg-violet-50 p-2 rounded-lg">
+            <i data-feather="mail" class="w-5 h-5 text-gray-600"></i>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900">Información de Contacto</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+              Correo Electrónico <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="correo@ejemplo.com"
+              [class]="'w-full px-4 py-3 rounded-lg border transition-all ' +
+                (email?.invalid && (email?.dirty || email?.touched)
+                  ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
+                  : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20')"
+            />
+
+            @if (email?.invalid && (email?.dirty || email?.touched)) {
+              <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                @if (email?.errors?.['required']) {
+                  <span>El correo es requerido</span>
+                }
+                @if (email?.errors?.['email']) {
+                  <span>Ingrese un correo válido</span>
+                }
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Step 3: Imagen -->
+    @if (currentStep === 3) {
+      <div class="mb-8 step-content">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+          <div class="bg-emerald-50 p-2 rounded-lg">
+            <i data-feather="image" class="w-5 h-5 text-gray-600"></i>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900">Imagen del Cliente</h2>
+          <span class="text-sm text-gray-500">(Opcional)</span>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+          <div class="flex-1">
+            <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">
+              Seleccionar Imagen
+            </label>
+
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              (change)="onImageSelected($event)"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-700 file:cursor-pointer"
+            />
+
+            <p class="mt-2 text-sm text-gray-500">Tamaño máximo: 5MB. Formatos: JPG, PNG</p>
+          </div>
+
+          @if (imagePreview) {
+            <div class="flex-shrink-0">
+              <p class="text-sm font-semibold text-gray-700 mb-2">Vista Previa</p>
+
+              <div class="relative">
+                <img
+                  [src]="imagePreview"
+                  alt="Vista previa"
+                  class="w-32 h-32 object-cover rounded-xl border-2 border-gray-200 shadow-md"
+                />
+
+                <div class="absolute -top-2 -right-2 bg-gray-500 text-white rounded-full p-1">
+                  <i data-feather="check" class="w-4 h-4"></i>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Step 4: Estado -->
+    @if (currentStep === 4) {
+      <div class="mb-8 step-content">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+          <div class="bg-blue-50 p-2 rounded-lg">
+            <i data-feather="settings" class="w-5 h-5 text-primary"></i>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900">Estado del Cliente</h2>
+        </div>
+
+        <div>
+          <label for="customer_status" class="block text-sm font-semibold text-gray-700 mb-2">
+            Estado <span class="text-red-500">*</span>
+          </label>
+
+          <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="customer_status"
+                [checked]="customer_status?.value === 1"
+                (change)="customerForm.patchValue({ customer_status: 1 })"
+                class="w-4 h-4 text-primary focus:ring-primary focus:ring-2"
+              />
+
+              <span class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                Activo
+              </span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="customer_status"
+                [checked]="customer_status?.value === 0"
+                (change)="customerForm.patchValue({ customer_status: 0 })"
+                class="w-4 h-4 text-red-500 focus:ring-red-500 focus:ring-2"
+              />
+
+              <span class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                Inactivo
+              </span>
+            </label>
+          </div>
+
+          <p class="mt-2 text-sm text-gray-500">Define si el cliente está activo o inactivo en el sistema.</p>
+        </div>
+      </div>
+    }
+
+    <!-- Action Buttons -->
+    <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+      <div>
+        @if (currentStep > 1) {
+          <button
+            type="button"
+            (click)="previousStep()"
+            [disabled]="loading"
+            class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+            <i data-feather="chevron-left" class="w-5 h-5"></i>
+            Anterior
+          </button>
+        }
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          (click)="onCancel()"
+          [disabled]="loading"
+          class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+          <i data-feather="x" class="w-5 h-5"></i>
+          Cancelar
+        </button>
+
+        @if (currentStep < totalSteps) {
+          <button
+            type="button"
+            (click)="nextStep()"
+            [disabled]="loading"
+            class="px-6 py-3 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+            <span>Siguiente</span>
+            <i data-feather="chevron-right" class="w-5 h-5"></i>
+          </button>
+        } @else {
+          <button
+            type="submit"
+            [disabled]="loading || customerForm.invalid"
+            class="px-6 py-3 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+
+            @if (loading) {
+              <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>{{ mode === 'create' ? 'Creando...' : 'Guardando...' }}</span>
+            } @else {
+              <i data-feather="check-circle" class="w-5 h-5"></i>
+              <span>{{ mode === 'create' ? 'Crear Cliente' : 'Guardar Cambios' }}</span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+</div>

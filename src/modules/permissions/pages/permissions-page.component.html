@@ -1,0 +1,143 @@
+<!-- Sidebar para crear/editar permiso -->
+<app-permission-form-sidebar *ngIf="showSidebar" [permission]="editingPermission" (closeSidebar)="closeSidebar()"></app-permission-form-sidebar>
+
+<!-- Header Section -->
+<div class="mb-8">
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Gestión de Permisos</p>
+      <h1 class="text-4xl font-bold text-gray-900">Permisos</h1>
+    </div>
+    <button
+      (click)="openSidebar()"
+      class="px-4 py-2 bg-primary hover:bg-primary-700 text-white rounded-lg transition-colors flex items-center gap-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Crear Nuevo Permiso
+    </button>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <!-- Total Permisos -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-blue-50 p-3 rounded-lg">
+        <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+        </svg>
+      </div>
+      <span class="text-2xl font-bold text-gray-900">{{ permissions().length }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Total Permisos</p>
+    <p class="text-xs text-gray-500 mt-1">Registrados en el sistema</p>
+  </div>
+
+  <!-- Permisos Activos -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-yellow-50 p-3 rounded-lg">
+        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 11 12 14 22 4"></polyline>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+      </div>
+      <span class="text-2xl font-bold text-gray-900">{{ activePermissionsCount() }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Permisos Activos</p>
+    <p class="text-xs text-gray-500 mt-1">Estado: Activo</p>
+  </div>
+
+  <!-- Permisos Inactivos -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="bg-blue-50 p-3 rounded-lg">
+        <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <span class="text-2xl font-bold text-gray-900">{{ inactivePermissionsCount() }}</span>
+    </div>
+    <p class="text-sm text-gray-600 font-medium">Permisos Inactivos</p>
+    <p class="text-xs text-gray-500 mt-1">Estado: Inactivo</p>
+  </div>
+</div>
+
+<!-- Loading State -->
+@if (loading()) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    <p class="mt-4 text-gray-600">Cargando permisos...</p>
+  </div>
+}
+
+<!-- Error State -->
+@if (error() && !loading()) {
+  <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+    <div class="flex items-start gap-3">
+      <svg class="w-6 h-6 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <div class="flex-1">
+        <h3 class="text-red-800 font-semibold mb-1">Error al cargar datos</h3>
+        <p class="text-red-600 text-sm">{{ error() }}</p>
+      </div>
+      <button
+        (click)="loadPermissions()"
+        class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors text-sm font-medium">
+        Reintentar
+      </button>
+    </div>
+  </div>
+}
+
+<!-- Data Table -->
+@if (!loading() && !error()) {
+<app-data-table
+  [columns]="tableColumns"
+  [data]="pagination.paginatedItems()"
+  [actions]="tableActions"
+  [showSearch]="true"
+  [showFooter]="true"
+  [customActions]="true"
+  [trackBy]="'id_permission'"
+  [startRecord]="pagination.startRecord()"
+  [endRecord]="pagination.endRecord()"
+  [totalRecords]="pagination.totalItems()"
+  (search)="onSearch($event)"
+  emptyMessage="No se encontraron permisos">
+
+  <!-- Custom Actions Slot -->
+  <div slot="actions" class="flex gap-2">
+    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span class="hidden sm:inline">Exportar</span>
+    </button>
+    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+      </svg>
+      <span class="hidden sm:inline">Filtrar</span>
+    </button>
+  </div>
+
+  <!-- Pagination Slot -->
+  <app-pagination
+    slot="pagination"
+    [currentPage]="pagination.currentPage()"
+    [totalPages]="pagination.totalPages()"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</app-data-table>
+}

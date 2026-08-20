@@ -1,0 +1,160 @@
+/* Create Customer Component - Professional Styles */
+
+/* Input focus animations */
+input:focus {
+  outline: none;
+}
+
+/* Smooth transitions for all interactive elements */
+input,
+button,
+.border {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Stepper animations */
+.stepper-step {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade in animation for step content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-content {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Card hover effect */
+.bg-white {
+  transition: all 0.3s ease;
+}
+
+/* Icon animations */
+i[data-feather] {
+  transition: all 0.2s ease;
+}
+
+button:hover i[data-feather] {
+  transform: scale(1.1);
+}
+
+/* File input custom styling */
+input[type="file"]::file-selector-button {
+  transition: all 0.2s ease;
+}
+
+input[type="file"]:hover::file-selector-button {
+  transform: translateY(-1px);
+}
+
+/* Image preview animation */
+img {
+  transition: all 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.05);
+}
+
+/* Alert slide-in animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bg-red-50,
+.bg-emerald-50 {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Focus ring enhancement */
+input:focus-visible {
+  outline: none;
+}
+
+/* Breadcrumb link hover effect */
+a:hover {
+  text-decoration: none;
+}
+
+/* Button ripple effect preparation */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Disabled state */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+input:disabled {
+  cursor: not-allowed;
+  background-color: #f3f4f6;
+}
+
+/* Section divider animation */
+.border-b {
+  position: relative;
+}
+
+.border-b::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #0061f2, transparent);
+  transition: width 0.5s ease;
+}
+
+.border-b:hover::after {
+  width: 100%;
+}
+

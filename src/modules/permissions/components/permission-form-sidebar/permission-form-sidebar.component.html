@@ -1,0 +1,49 @@
+<div class="sidebar-backdrop" (click)="onClose()"></div>
+<div class="sidebar">
+  <button class="close-btn" (click)="onClose()" aria-label="Cerrar formulario">
+    <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+  <h2 class="flex items-center gap-2 mb-6 text-2xl font-bold text-primary">
+    <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+      <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+    </svg>
+    {{ permission ? 'Editar Permiso' : 'Crear Nuevo Permiso' }}
+  </h2>
+  <br>
+  <br>
+  <br>
+  <form class="flex flex-col gap-5" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="permission_name" class="block text-sm font-semibold text-primary-dark mb-1">Nombre del permiso <span class="text-secondary">*</span></label>
+      <div class="relative">
+        <input id="permission_name" name="permission_name" type="text" required maxlength="50"
+          [(ngModel)]="formData.permission_name"
+          class="w-full px-4 py-2 border-2 border-primary/30 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary/30 bg-gray-50 text-primary-dark placeholder:text-gray-400 transition"
+          placeholder="Ej: Crear Usuario" />
+        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+        </svg>
+      </div>
+    </div>
+    <div>
+      <label for="permission_description" class="block text-sm font-semibold text-primary-dark mb-1">Descripción</label>
+      <textarea id="permission_description" name="permission_description" rows="2" maxlength="120"
+        [(ngModel)]="formData.permission_description"
+        class="w-full px-4 py-2 border-2 border-primary/30 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary/30 bg-gray-50 text-primary-dark placeholder:text-gray-400 transition resize-none"
+        placeholder="Describe brevemente el permiso"></textarea>
+    </div>
+    <div class="flex items-center gap-3 mt-1">
+      <input id="is_active" name="is_active" type="checkbox" [(ngModel)]="formData.is_active" class="accent-primary w-5 h-5 rounded border-primary/40 focus:ring-secondary" />
+      <label for="is_active" class="text-primary-dark font-medium select-none cursor-pointer">Activo</label>
+    </div>
+    <button type="submit" class="mt-2 bg-primary hover:bg-secondary text-white hover:text-primary-dark font-bold py-2 rounded-lg shadow transition-all flex items-center justify-center gap-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+      {{ permission ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </form>
+</div>
